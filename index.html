@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title data-t="meta.titolo">Alburn. Un sistema solo, attorno all’articolo.</title>
+<meta name="description" data-t-content="meta.descrizione" content="Alburn è un sistema solo per tutto quello che ruota attorno all’articolo: tecnico, produzione, scorte e riordini, acquisti, commerciale. Per le aziende dell’arredo.">
+<meta name="theme-color" content="#19191c">
+<meta name="color-scheme" content="light dark">
+<meta name="referrer" content="no-referrer">
+<link rel="canonical" href="https://alburn.it/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://alburn.it/">
+<meta property="og:title" data-t-content="meta.titolo" content="Alburn. Un sistema solo, attorno all’articolo.">
+<meta property="og:description" data-t-content="meta.descrizione" content="Alburn è un sistema solo per tutto quello che ruota attorno all’articolo: tecnico, produzione, scorte e riordini, acquisti, commerciale. Per le aziende dell’arredo.">
+<meta property="og:image" content="https://alburn.it/anteprima.jpg">
+<link rel="icon" href="marchio/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="stile.css">
+<script>document.documentElement.className = 'js' + (matchMedia('(prefers-reduced-motion: reduce)').matches || /[?&]fermo\b/.test(location.search) ? '' : ' mov');</script>
+<!-- i pezzi del 3D presi dagli esempi di three.js (three/addons/) chiedono «three» per nome: qui si dice che è il file nella cartella -->
+<script type="importmap">{"imports": {"three": "./three/three.module.js"}}</script>
+</head>
+<body>
+
+<canvas id="tre" aria-hidden="true"></canvas>
+<div id="notte" aria-hidden="true"></div>
+
+<a class="salta" href="#prima" data-t="salta">Vai al contenuto</a>
+
+<header class="testa">
+  <a class="marchio" href="#cima" data-t-aria="marchio.aria" aria-label="Alburn, torna all’inizio">
+    <svg class="scritta" viewBox="0 -740 2908 752" aria-hidden="true"><g><g fill="currentColor" transform="scale(1 -1)"><g transform="translate(0 0)"><path d="M454 0V500" fill="none" stroke="currentColor" stroke-width="132"/><circle cx="260" cy="250" r="194" fill="none" stroke="currentColor" stroke-width="132"/></g><g transform="translate(604 0)"><path d="M66 0V740" fill="none" stroke="currentColor" stroke-width="132"/></g><g transform="translate(820 0)"><path d="M66 0V740" fill="none" stroke="currentColor" stroke-width="132"/><circle cx="260" cy="250" r="194" fill="none" stroke="currentColor" stroke-width="132"/></g><g transform="translate(1404 0) rotate(180 260 250)"><path d="M66 0V500" fill="none" stroke="currentColor" stroke-width="132"/><path d="M66 250A194 194 0 0 0 454 250V0" fill="none" stroke="currentColor" stroke-width="132"/></g><g transform="translate(2008 0)"><path d="M66 0V500" fill="none" stroke="currentColor" stroke-width="132"/><path d="M66 250A194 194 0 0 0 260 444H294" fill="none" stroke="currentColor" stroke-width="132"/></g><g transform="translate(2388 0)"><path d="M66 0V500" fill="none" stroke="currentColor" stroke-width="132"/><path d="M66 250A194 194 0 0 0 454 250V0" fill="none" stroke="currentColor" stroke-width="132"/></g></g></g></svg>
+  </a>
+  <nav class="voci" data-t-aria="nav.aria" aria-label="Sezioni della pagina">
+    <a href="#sistema" data-t="nav.sistema">Il sistema</a>
+    <a href="#apri" data-t="nav.esempio">L’esempio</a>
+    <a href="#principi" data-t="nav.principi">I principi</a>
+    <a href="#punto" data-t="nav.punto">Lo stato</a>
+    <a href="#contatto" data-t="nav.contatto">Contatto</a>
+  </nav>
+  <div class="lingue" role="group" data-t-aria="lingue.aria" aria-label="Lingua">
+    <button type="button" data-lingua="it" aria-pressed="true" lang="it" title="Italiano">IT</button>
+    <button type="button" data-lingua="en" aria-pressed="false" lang="en" title="English">EN</button>
+  </div>
+</header>
+
+<main id="cima">
+
+<!-- 1. L'APERTURA: il titolo sopra l'elica intera, con il mobile piccolo dentro, tenuto dai rami. Da qui al mobile
+     che si apre è sempre notte, per tutti (Paolo, 21 novembre): il resto della pagina segue il tema del computer -->
+<section class="apertura notte" id="apertura">
+  <div class="apertura-testo">
+    <h1 data-t="hero.titolo">Tutto legato.</h1>
+    <p class="sotto" data-t="hero.sotto">Un sistema solo per tutto quello che ruota attorno all’articolo.<br>Dal foro alla fabbrica, una catena sola.</p>
+  </div>
+  <img class="ferma" src="ferma/elica.jpg" width="1600" height="1000" alt="" loading="lazy" decoding="async">
+  <p class="scorri" aria-hidden="true"><span data-t="hero.scorri">Scorrere</span><svg viewBox="0 0 12 18" width="12" height="18"><path d="M6 1v15M1 11l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
+</section>
+
+<!-- 2. OGGI: tanti sistemi, tanti archivi. Sei sistemi, ognuno con la sua copia della stessa misura -->
+<section class="prima notte" id="prima">
+  <div class="largo">
+    <div class="capo entra">
+      <p class="occhiello" data-t="prima.occhiello">Il punto di partenza</p>
+      <h2 data-t="prima.titolo">Tanti sistemi.<br>Tanti archivi.</h2>
+      <p class="cappello" data-t="prima.cappello">In azienda lavorano più sistemi, che si passano i dati l’uno con l’altro.<br>Ognuno tiene la sua copia.<br>Tra uno e l’altro i dati passano a mano.</p>
+    </div>
+    <div class="attrezzi entra" role="img" data-t-aria="prima.tela" aria-label="Sei sistemi, ognuno con la sua copia dei dati">
+      <ul aria-hidden="true">
+        <li><span class="nome" data-t="prima.1">gli ordini</span><span class="copia mono"><span class="vecchia">800&nbsp;mm</span><span class="nuova">900&nbsp;mm</span></span></li>
+        <li><span class="nome" data-t="prima.2">i disegni</span><span class="copia mono"><span class="vecchia">800&nbsp;mm</span><span class="nuova">900&nbsp;mm</span></span></li>
+        <li><span class="nome" data-t="prima.3">le distinte</span><span class="copia mono"><span class="vecchia">800&nbsp;mm</span><span class="nuova">900&nbsp;mm</span></span></li>
+        <li><span class="nome" data-t="prima.4">i programmi</span><span class="copia mono"><span class="vecchia">800&nbsp;mm</span><span class="nuova">900&nbsp;mm</span></span></li>
+        <li><span class="nome" data-t="prima.5">le scorte</span><span class="copia mono"><span class="vecchia">800&nbsp;mm</span><span class="nuova">900&nbsp;mm</span></span></li>
+        <li><span class="nome" data-t="prima.6">i listini</span><span class="copia mono"><span class="vecchia">800&nbsp;mm</span><span class="nuova">900&nbsp;mm</span></span></li>
+      </ul>
+    </div>
+    <p class="chiusa entra" data-t="prima.chiusa">La stessa misura è scritta in sei posti.<br>Quando cambia, va cambiata sei volte.</p>
+  </div>
+</section>
+
+<!-- 3. UNA CATENA SOLA: l'elica lega i sistemi. Da sopra scende la richiesta, da sotto sale l'opportunità -->
+<section class="sistema notte" id="sistema">
+  <div class="largo">
+    <div class="capo entra">
+      <p class="occhiello" data-t="catena.occhiello">Il sistema</p>
+      <h2 data-t="catena.titolo">Una catena sola.</h2>
+      <p class="cappello" data-t="catena.cappello">Alburn prende il posto di sistemi e archivi separati.<br>Governa tutto quello che ruota attorno all’articolo.<br>Il dato è scritto una volta, e ogni area lo legge da lì.</p>
+    </div>
+  </div>
+  <div class="lega" id="lega">
+    <div class="lega-fermo">
+      <div class="lega-tela" role="img" data-t-aria="catena.tela" aria-label="L’elica lega i sistemi in una catena sola">
+        <img class="ferma" src="ferma/catena.jpg" width="1600" height="1000" alt="" loading="lazy" decoding="async">
+        <ol class="attrezzi3d" aria-hidden="true"><li><span data-t="prima.1">gli ordini</span></li><li><span data-t="prima.2">i disegni</span></li><li><span data-t="prima.3">le distinte</span></li><li><span data-t="prima.4">i programmi</span></li><li><span data-t="prima.5">le scorte</span></li><li><span data-t="prima.6">i listini</span></li></ol>
+      </div>
+      <div class="verso sopra">
+        <h3 data-t="sopra.titolo">Da sopra, la richiesta.</h3>
+        <p data-t="sopra.testo">La richiesta del cliente scende lungo la catena: il mobile, i pezzi, le lavorazioni, la macchina.</p>
+        <span class="freccia giu" aria-hidden="true"><svg viewBox="0 0 12 18" width="12" height="18"><path d="M6 1v15M1 11l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </div>
+      <div class="verso sotto">
+        <span class="freccia su" aria-hidden="true"><svg viewBox="0 0 12 18" width="12" height="18"><path d="M6 1v15M1 11l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3 data-t="sotto.titolo">Da sotto, l’opportunità.</h3>
+        <p data-t="sotto.testo">Il magazzino sale lungo la stessa catena: quello che è a scorta diventa un’opportunità.</p>
+      </div>
+    </div>
+  </div>
+  <div class="largo">
+    <h3 class="aree-titolo entra" data-t="aree.titolo">Cinque aree, gli stessi dati.</h3>
+    <ol class="aree">
+      <li class="entra"><h4><span class="n mono">01</span><span data-t="area.1.nome">Tecnico</span></h4><p data-t="area.1.testo">Il pezzo, le lavorazioni, la tavola e la distinta nascono dalla stessa descrizione.</p></li>
+      <li class="entra"><h4><span class="n mono">02</span><span data-t="area.2.nome">Produzione</span></h4><p data-t="area.2.testo">Le fasi e i programmi delle macchine seguono il pezzo.</p></li>
+      <li class="entra"><h4><span class="n mono">03</span><span data-t="area.3.nome">Scorte e riordini</span></h4><p data-t="area.3.testo">La scorta e i riordini si contano sugli stessi articoli.</p></li>
+      <li class="entra"><h4><span class="n mono">04</span><span data-t="area.4.nome">Acquisti</span></h4><p data-t="area.4.testo">I componenti e le lavorazioni esterne hanno i loro fornitori e i loro costi.</p></li>
+      <li class="entra"><h4><span class="n mono">05</span><span data-t="area.5.nome">Commerciale</span></h4><p data-t="area.5.testo">Il listino e l’offerta leggono il costo dalla distinta.</p></li>
+    </ol>
+    <p class="aree-stato entra" data-t="aree.stato">Lo stato di ogni area è più sotto.</p>
+  </div>
+</section>
+
+<!-- 4. UN ESEMPIO: UN MOBILE. La camera vola lungo la spirale fino al mobile; il mobile si apre, si scompone, nascono i
+     fori. Con il movimento il quadro resta fermo mentre si scorre; senza, si legge fermo -->
+<section class="palco notte" id="apri" data-t-aria="palco.aria" aria-label="Il mobile d’esempio si apre">
+  <div class="fermo">
+    <canvas id="palco-tela" role="img" data-t-aria="palco.tela" aria-label="Una base da bagno d’esempio, disegnata a fil di ferro: scorrendo la pagina si apre in pannelli e ferramenta, e sul fianco compaiono i fori"></canvas>
+    <div class="didascalie">
+      <div class="dida" data-d="1">
+        <p class="occhiello" data-t="esempio.occhiello">Un esempio</p>
+        <h2 class="grande" data-t="d1.grande">Un mobile.</h2>
+        <p data-t="d1.sotto">Una base da bagno d’esempio.<br>Larga 800&nbsp;mm, profonda 460&nbsp;mm, alta 500&nbsp;mm.</p>
+        <p class="nota" data-t="esempio.nota">Il mobile è un esempio della catena, non il prodotto.</p>
+      </div>
+      <div class="dida" data-d="2">
+        <p class="grande"><span class="num" data-n="pannelli">7</span> <span data-t="d2.grande">pannelli.</span></p>
+        <p data-t="d2.sotto">Ogni pannello ha la sua descrizione unica: il grezzo, le lavorazioni, a cosa servono.<br>È il DNA del pezzo.</p>
+      </div>
+      <div class="dida" data-d="3">
+        <p class="grande"><span class="num" data-n="componenti">11</span> <span data-t="d3.grande">componenti.</span></p>
+        <p data-t="d3.sotto">Le guide, i cassetti, le maniglie, le staffe e il lavabo portano ognuno i suoi punti di fissaggio.</p>
+      </div>
+      <div class="dida" data-d="4">
+        <p class="grande"><span class="num" data-n="fori">32</span> <span data-t="d4.grande">fori.</span></p>
+        <p data-t="d4.sotto">Nessun foro è disegnato a mano.<br>Il componente lo chiede, il pannello lo riceve.</p>
+      </div>
+      <div class="dida" data-d="5">
+        <p class="grande" data-t="d5.grande">Ogni anello tiene il seguente.</p>
+        <p data-t="d5.sotto">Cambia il primo, e l’ultimo segue.</p>
+        <ol class="passi"><li data-t="passo.1">il pezzo</li><li data-t="passo.2">le lavorazioni</li><li data-t="passo.3">la tavola</li><li data-t="passo.4">la distinta</li><li data-t="passo.5">la macchina</li></ol>
+      </div>
+    </div>
+    <ol class="passi3d" aria-hidden="true"><li><b>01</b><span data-t="passo.1">il pezzo</span></li><li><b>02</b><span data-t="passo.2">le lavorazioni</span></li><li><b>03</b><span data-t="passo.3">la tavola</span></li><li><b>04</b><span data-t="passo.4">la distinta</span></li><li><b>05</b><span data-t="passo.5">la macchina</span></li></ol>
+  </div>
+</section>
+
+<!-- 4, seconda parte. LA PROVA: una misura cambia e tutto segue -->
+<section class="vivo" id="vivo">
+  <div class="largo">
+    <div class="capo entra">
+      <p class="occhiello" data-t="vivo.occhiello">La prova</p>
+      <h2 data-t="vivo.titolo">Una misura cambia.<br>Tutto segue.</h2>
+      <p class="cappello" data-t="vivo.cappello">Trascinare la larghezza.<br>Il pezzo, le lavorazioni, la tavola, la distinta, il costo e il programma si riscrivono insieme.<br>Nascono dalla stessa descrizione.</p>
+    </div>
+
+    <noscript><p class="avviso"><span lang="it">La scena ha bisogno di JavaScript.</span> <span lang="en">The scene needs JavaScript.</span></p></noscript>
+    <div class="vivo-griglia" id="scena">
+      <div class="vivo-testa">
+        <div class="vetro tela-carta">
+          <div class="vista">
+            <canvas id="vivo-tela" role="img" data-t-aria="vivo.tela" aria-label="Il mobile d’esempio, con il frontale alto in evidenza: si allarga e si stringe con la misura scelta"></canvas>
+            <canvas id="vivo-tre" role="img" data-t-aria="vivo.tela" aria-label="Il mobile d’esempio, con il frontale alto in evidenza: si allarga e si stringe con la misura scelta"></canvas>
+            <span id="vivo-quota" class="quota3d" aria-hidden="true"></span>
+          </div>
+          <div class="comando">
+            <label for="larghezza"><span data-t="vivo.larghezza">Larghezza</span> <output id="larghezza-n" for="larghezza">800</output> <span class="mm">mm</span></label>
+            <input id="larghezza" type="range" min="600" max="1200" step="10" value="800">
+            <div class="serie" role="group" data-t-aria="vivo.serie.aria" aria-label="Le larghezze di serie">
+              <span class="serie-nome" data-t="vivo.serie">di serie</span>
+              <button type="button" data-l="600">600</button><button type="button" data-l="800">800</button><button type="button" data-l="900">900</button><button type="button" data-l="1050">1050</button><button type="button" data-l="1200">1200</button>
+            </div>
+          </div>
+          <p class="semaforo" id="semaforo" aria-live="polite"><span class="pallino verde"></span><span id="semaforo-t"></span></p>
+        </div>
+      </div>
+
+      <ol class="catena">
+        <li class="anello vetro" data-a="1">
+          <h3><span class="n">01</span><span data-t="a1.titolo">Il DNA del pezzo</span></h3>
+          <p class="nota" data-t="a1.nota">Una descrizione sola: il grezzo, le lavorazioni, a cosa servono.</p>
+          <dl id="a-dna" class="mono blocco dna"></dl>
+          <p id="a-regola" class="nota sotto"></p>
+        </li>
+        <li class="anello vetro" data-a="2">
+          <h3><span class="n">02</span><span data-t="a2.titolo">Il pezzo e la sua tavola</span></h3>
+          <div id="a-tavola" class="tavola"></div>
+        </li>
+        <li class="anello vetro" data-a="3">
+          <h3><span class="n">03</span><span data-t="a3.titolo">Le lavorazioni</span></h3>
+          <ul id="a-lavorazioni" class="righe"></ul>
+        </li>
+        <li class="anello vetro" data-a="4">
+          <h3><span class="n">04</span><span data-t="a4.titolo">La distinta</span></h3>
+          <ul id="a-distinta" class="righe distinta"></ul>
+          <p class="costo"><span data-t="a4.costo">Costo d’esempio</span> <b id="a-costo" class="v"></b></p>
+        </li>
+        <li class="anello vetro" data-a="5">
+          <h3><span class="n">05</span><span data-t="a5.titolo">La macchina</span></h3>
+          <pre id="a-programma" class="mono blocco programma" tabindex="0" data-t-aria="a5.aria" aria-label="Il programma d’esempio per la foratrice"></pre>
+        </li>
+      </ol>
+    </div>
+    <p class="avviso entra" data-t="vivo.avviso">La scena è un esempio, con dati d’esempio.<br>I programmi mostrati non vanno in macchina.</p>
+  </div>
+</section>
+
+<!-- 5. TRE PRINCIPI -->
+<section class="cose" id="principi">
+  <h2 class="occhiello" data-t="cose.occhiello">Tre principi</h2>
+  <div class="frasi">
+    <div class="frase entra"><h3 class="grande" data-t="p1.grande">Il pezzo si descrive una volta sola.</h3><p data-t="p1.sotto">Il modello, la tavola, la distinta e il programma si leggono da quella descrizione.<br>Niente è da riallineare a mano.</p></div>
+    <div class="frase entra"><h3 class="grande" data-t="p2.grande">Mai un no secco.</h3><p data-t="p2.sotto">Per un pezzo fuori serie Alburn dà il costo e le strade.<br>Chi progetta sceglie.<br>Alburn si ferma solo davanti all’impossibile.</p></div>
+    <div class="frase entra"><h3 class="grande" data-t="p3.grande">Come nel piccolo, così nel grande.</h3><p data-t="p3.sotto">La stessa regola vale nel foro e nella fabbrica.<br>Il pezzo sta nel mobile, il mobile nella gamma, la gamma nella produzione.<br>Ogni livello è fatto come gli altri.</p></div>
+  </div>
+</section>
+
+<!-- 6. COME SI ENTRA -->
+<section class="entrata" id="entra">
+  <div class="largo">
+    <div class="capo entra">
+      <p class="occhiello" data-t="entra.occhiello">Come si entra</p>
+      <h2 data-t="entra.titolo">Senza rifare tutto.</h2>
+    </div>
+    <ol class="parti">
+      <li class="entra"><span class="n mono">01</span><h3 class="ruolo" data-t="entra.1.grande">Alburn legge quello che c’è.</h3><p data-t="entra.1.sotto">Parte dal gestionale e dagli archivi che l’azienda ha già.</p></li>
+      <li class="entra"><span class="n mono">02</span><h3 class="ruolo" data-t="entra.2.grande">Prende un’area alla volta.</h3><p data-t="entra.2.sotto">Prima l’articolo e il tecnico, poi la produzione, poi gli acquisti.</p></li>
+      <li class="entra"><span class="n mono">03</span><h3 class="ruolo" data-t="entra.3.grande">Contabilità e fisco restano dove sono.</h3><p data-t="entra.3.sotto">Restano a un gestionale classico.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 7. LO STATO DEL PRODOTTO -->
+<section class="punto" id="punto">
+  <div class="largo">
+    <div class="capo entra">
+      <p class="occhiello" data-t="punto.occhiello">Lo stato</p>
+      <h2 data-t="punto.titolo">Lo stato del prodotto.</h2>
+      <p class="cappello" data-t="punto.cappello">Alburn è in sviluppo.<br>Ogni funzione elencata sotto «oggi» è provata da un test automatico, su un’azienda d’esempio.</p>
+    </div>
+    <div class="tempi">
+      <article class="entra">
+        <h3><span class="pallino verde"></span><span data-t="oggi.titolo">Oggi</span></h3>
+        <ul>
+          <li data-t="oggi.1">La descrizione unica del pezzo, con il controllo che riconosce due pezzi uguali, anche con codici diversi.</li>
+          <li data-t="oggi.2">Le regole dell’azienda, scritte una volta e applicate sempre.<br>Ogni regola risponde: possibile, possibile con il suo costo, impossibile.</li>
+          <li data-t="oggi.3">Una base da bagno d’esempio, parametrica, con la sua tabella delle misure.<br>I componenti forano i pannelli dai loro punti di fissaggio.</li>
+          <li data-t="oggi.4">La distinta, il costo e il listino d’esempio, che seguono il modello.</li>
+          <li data-t="oggi.5">I programmi d’esempio per la foratrice, la sezionatrice e la bordatrice, scritti dalla descrizione del pezzo.<br>Non sono ancora verificati su programmi veri: non vanno in macchina.</li>
+          <li data-t="oggi.6">I documenti dell’articolo, in italiano e in inglese, con la revisione che segue l’articolo.</li>
+          <li data-t="oggi.7">Una prima finestra per l’ufficio tecnico, dalla tabella delle misure all’approvazione.</li>
+        </ul>
+      </article>
+      <article class="entra">
+        <h3><span class="pallino giallo"></span><span data-t="svil.titolo">In sviluppo</span></h3>
+        <ul>
+          <li data-t="svil.1">Il modellatore: l’area dove l’ufficio tecnico disegna con il mouse i pezzi di serie e i loro punti di fissaggio.</li>
+          <li data-t="svil.2">La struttura del mobile, disegnata una volta: da lì nascono i modelli.</li>
+          <li data-t="svil.3">L’interfaccia completa per l’ufficio tecnico.</li>
+        </ul>
+      </article>
+      <article class="entra">
+        <h3><span class="pallino"></span><span data-t="prog.titolo">In programma</span></h3>
+        <ul>
+          <li data-t="prog.1">I connettori che leggono un gestionale vero.</li>
+          <li data-t="prog.2">La pulizia di un archivio esistente: trovare i pezzi uguali con codici diversi.</li>
+          <li data-t="prog.3">La verifica dei programmi su quelli di macchine vere, e poi la produzione.</li>
+          <li data-t="prog.4">Le scorte e i riordini, e gli acquisti.</li>
+          <li data-t="prog.5">Il configuratore commerciale, oggi una prima pagina di prova, e il portale per il cliente.</li>
+          <li data-t="prog.6">La parte che propone: un modello che suggerisce le regole.<br>Le decisioni e i conti restano alla parte deterministica.</li>
+          <li data-t="prog.7">Il primo lavoro dentro un’azienda vera, un’area alla volta.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 8. CONTATTO -->
+<section class="contatto" id="contatto">
+  <div class="largo entra">
+    <h2 data-t="contatto.titolo">Alburn da vicino.</h2>
+    <p class="cappello" data-t="contatto.testo">Per le aziende dell’arredo e per i fornitori di ferramenta: una dimostrazione sull’azienda d’esempio.</p>
+    <p><a class="posta" href="mailto:paolo@alburn.it" data-t="contatto.tasto">Chiedere una dimostrazione</a></p>
+    <p class="indirizzo"><a href="mailto:paolo@alburn.it">paolo@alburn.it</a></p>
+  </div>
+</section>
+
+</main>
+
+<footer class="piede">
+  <div class="largo">
+    <p class="riservatezza" data-t="piede.privacy">Questa pagina non raccoglie dati: niente cookie, niente statistiche, niente caricato da altri siti.<br>Ricorda solo la lingua scelta, nel browser di chi legge.<br>Come per ogni sito, chi lo ospita registra i dati tecnici di ogni visita.</p>
+    <p><span data-t="piede.esempio">Tutti i dati di questa pagina sono esempi.</span> <span data-t="piede.chi">Alburn è un prodotto di Paolo Moreschi.</span> <span>© 2026</span></p>
+  </div>
+</footer>
+
+<script src="testi.js"></script>
+<script src="scena.js"></script>
+<script type="module" src="scena3d.js"></script>
+</body>
+</html>

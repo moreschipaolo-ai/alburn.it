@@ -1,0 +1,398 @@
+/* Alburn, la pagina di alburn.it (21 novembre 2026). Il marchio per ora è la sola scritta «alburn» (MARCHIO.md).
+   I colori e i caratteri vengono dalla finestra di disegno dell'ufficio tecnico: la carta calda, il vetro,
+   un solo accento (l'indaco di Alburn), il verde, il giallo e il rosso solo per il semaforo. Caratteri di sistema:
+   niente si carica da altri siti. */
+:root{
+  color-scheme:light dark;
+  --fondo-a:#efece6; --fondo-b:#e2ded6; --fondo-c:#cfcabf;
+  --testo:#1d1d1f; --testo-2:#4f4e49; --testo-3:#5a5852;
+  --vetro:rgba(250,248,243,.6); --vetro-forte:rgba(248,246,241,.82); --bordo:rgba(255,255,255,.62); --filo:rgba(0,0,0,.1); --filo-2:rgba(0,0,0,.18);
+  --luce:rgba(255,255,255,.9); --ombra:rgba(40,34,20,.22); --tocco:rgba(0,0,0,.05); --tocco-2:rgba(0,0,0,.09);
+  /* IL COLORE DI ALBURN: l'indaco (Paolo, 21 novembre 2026). Sta in due variabili sole: --indaco per il tema chiaro e
+     --indaco-chiaro per quello scuro (sui fondi scuri regge il testo: almeno 5,9 a 1; sul vetro delle schede 5,1 a 1).
+     È il solo colore d'accento: un filo dell'elica, i numeri vivi, il tasto della posta, gli occhielli. Il tono si
+     cambia qui, e solo qui; --colore-alburn sceglie quale dei due vale nel tema */
+  --indaco:#1E3F72; --indaco-chiaro:#7FA1D8; --colore-alburn:var(--indaco);
+  --accento:var(--colore-alburn); --accento-testo:var(--colore-alburn); --su-accento:#fff; --verde:#22875a; --giallo:#b97400; --giallo-testo:#8f5a00; --rosso:#d5403f;
+  /* i colori del disegno a spigoli: il rovere, il laccato dei frontali, la ceramica, il metallo (sopra, davanti, di
+     lato), gli spigoli, i fori. Dalle prime correzioni di Paolo (21 novembre sera): il mobile più scuro, meno bianco */
+  --legno-1:#b79a76; --legno-2:#a38562; --legno-3:#8c7355;
+  --frontale-1:#666c75; --frontale-2:#50565f; --frontale-3:#41464e;
+  --ceramica-1:#dedad2; --ceramica-2:#cfcbc2; --ceramica-3:#bfbab0;
+  --metallo-1:#c9cbce; --metallo-2:#b3b6ba; --metallo-3:#9da1a6;
+  /* nella scena non c'è più il blu (Paolo, 21 novembre sera: il mobile resta l'unico colore vero): il pezzo in
+     evidenza è un grigio chiaro, i segni (la quota, i fili, gli anelli dei fori) sono neri, e chiari sull'antracite */
+  --vivo-1:#cfd0d2; --vivo-2:#b9bbbe; --vivo-3:#a3a5a9;
+  --spigolo:#1d1d1f; --foro:#1d1d1f; --foro-dentro:#d9cbae; --segno:#1d1d1f;
+  /* il 3D: il laccato dei frontali, lo smalto della ceramica, i due fili dell'elica (uno prende il colore di Alburn, l'altro è grigio), i pioli e il
+     piolo acceso, il frontale in evidenza, i segni, quanto è scura l'ombra per terra, quanta luce prende la foto
+     (l'esposizione dello sviluppo ACES). Il rovere sta in scena3d.js */
+  --tre-frontale:#2b3037; --tre-ceramica:#c8c4bc; --tre-filo-a:var(--colore-alburn); --tre-filo:#84878c; --tre-piolo:#a4a7ab; --tre-acceso:#17181a; --tre-evidenza:#9a9da2; --tre-segno:#1d1d1f;
+  --tre-ombra:.3; --tre-esposizione:.8; --tre-polvere:#fff6e6; --tre-polvere-forza:.16;
+  --sans:system-ui,"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --piano:cubic-bezier(.3,.7,.2,1);
+  --testa:56px;
+}
+@media (prefers-color-scheme: dark){:root{
+  --fondo-a:#232326; --fondo-b:#19191c; --fondo-c:#101012;
+  --testo:#f3f2ef; --testo-2:#b9b7b1; --testo-3:#96948e;
+  --vetro:rgba(52,52,58,.62); --vetro-forte:rgba(40,40,45,.88); --bordo:rgba(255,255,255,.13); --filo:rgba(255,255,255,.1); --filo-2:rgba(255,255,255,.2);
+  --luce:rgba(255,255,255,.14); --ombra:rgba(0,0,0,.55); --tocco:rgba(255,255,255,.07); --tocco-2:rgba(255,255,255,.12);
+  --colore-alburn:var(--indaco-chiaro); --su-accento:#0d1420; --verde:#4cc38a; --giallo:#f0b34a; --giallo-testo:#f0b34a; --rosso:#ff6b66;
+  --legno-1:#48484e; --legno-2:#3c3c42; --legno-3:#313136;
+  --frontale-1:#3a3b41; --frontale-2:#2f3035; --frontale-3:#26272b;
+  --ceramica-1:#5a5a60; --ceramica-2:#4b4b51; --ceramica-3:#3e3e44;
+  --metallo-1:#6c6f75; --metallo-2:#5c5f65; --metallo-3:#4c4f55;
+  --vivo-1:#7b7d83; --vivo-2:#696b71; --vivo-3:#595b60;
+  --spigolo:#eceae4; --foro:#101012; --foro-dentro:#cfc3a8; --segno:#eceae4;
+  --tre-frontale:#30353d; --tre-ceramica:#b4b0a8; --tre-filo:#73767c; --tre-piolo:#565960; --tre-acceso:#ffffff; --tre-evidenza:#8f9298; --tre-segno:#eceae4;
+  --tre-ombra:.5; --tre-esposizione:.74; --tre-polvere:#ffe9c8; --tre-polvere-forza:.5;
+}}
+
+/* LA NOTTE (Paolo, 21 novembre: «il palco dell'elica è sempre notte, per tutti»). Dall'apertura al mobile che si apre
+   la pagina è scura anche per chi ha il computer in chiaro; il resto segue il tema. Sono gli stessi colori del tema
+   scuro qui sopra: se cambiano lì, cambiano anche qui (in coda, le tre variabili che prendono il colore di Alburn:
+   vanno ridette, perché una variabile si calcola dove è scritta). La barra li prende finché sta sopra la notte (html.su-notte) */
+.notte,html.su-notte .testa{
+  --fondo-a:#232326; --fondo-b:#19191c; --fondo-c:#101012;
+  --testo:#f3f2ef; --testo-2:#b9b7b1; --testo-3:#96948e;
+  --vetro:rgba(52,52,58,.62); --vetro-forte:rgba(40,40,45,.88); --bordo:rgba(255,255,255,.13); --filo:rgba(255,255,255,.1); --filo-2:rgba(255,255,255,.2);
+  --luce:rgba(255,255,255,.14); --ombra:rgba(0,0,0,.55); --tocco:rgba(255,255,255,.07); --tocco-2:rgba(255,255,255,.12);
+  --colore-alburn:var(--indaco-chiaro); --su-accento:#0d1420; --verde:#4cc38a; --giallo:#f0b34a; --giallo-testo:#f0b34a; --rosso:#ff6b66;
+  --legno-1:#48484e; --legno-2:#3c3c42; --legno-3:#313136;
+  --frontale-1:#3a3b41; --frontale-2:#2f3035; --frontale-3:#26272b;
+  --ceramica-1:#5a5a60; --ceramica-2:#4b4b51; --ceramica-3:#3e3e44;
+  --metallo-1:#6c6f75; --metallo-2:#5c5f65; --metallo-3:#4c4f55;
+  --vivo-1:#7b7d83; --vivo-2:#696b71; --vivo-3:#595b60;
+  --spigolo:#eceae4; --foro:#101012; --foro-dentro:#cfc3a8; --segno:#eceae4;
+  --tre-frontale:#30353d; --tre-ceramica:#b4b0a8; --tre-filo:#73767c; --tre-piolo:#565960; --tre-acceso:#ffffff; --tre-evidenza:#8f9298; --tre-segno:#eceae4;
+  --tre-ombra:.5; --tre-esposizione:.74; --tre-polvere:#ffe9c8; --tre-polvere-forza:.5;
+  --accento:var(--colore-alburn); --accento-testo:var(--colore-alburn); --tre-filo-a:var(--colore-alburn);
+  color:var(--testo)}
+
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--testa) + 12px)}
+body{margin:0;font-family:var(--sans);color:var(--testo);background:var(--fondo-b);-webkit-font-smoothing:antialiased;
+  font-size:17px;line-height:1.5;overflow-x:hidden}
+@supports (overflow:clip){body{overflow-x:clip}}
+h1,h2,h3,h4,p,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+a:focus-visible,button:focus-visible,input:focus-visible,pre:focus-visible{outline:2px solid var(--accento);outline-offset:3px;border-radius:6px}
+canvas{display:block}
+.largo{width:min(1180px,100% - 44px);margin-inline:auto}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.vetro{background:var(--vetro);-webkit-backdrop-filter:blur(26px) saturate(170%);backdrop-filter:blur(26px) saturate(170%);
+  border:1px solid var(--bordo);box-shadow:inset 0 1px 0 var(--luce),0 22px 60px -26px var(--ombra),0 1px 4px rgba(0,0,0,.05);border-radius:22px}
+.pallino{width:10px;height:10px;border-radius:50%;flex:none;background:var(--testo-3);display:inline-block}
+.pallino.verde{background:var(--verde);box-shadow:0 0 0 3px color-mix(in srgb,var(--verde) 22%,transparent)}
+.pallino.giallo{background:var(--giallo);box-shadow:0 0 0 3px color-mix(in srgb,var(--giallo) 22%,transparent)}
+.salta{position:absolute;left:12px;top:-60px;z-index:50;padding:10px 14px;border-radius:10px;background:var(--accento);color:var(--su-accento);text-decoration:none}
+.salta:focus{top:8px}
+
+/* la testa: il marchio, le voci, l'interruttore delle lingue */
+.testa{position:fixed;inset:0 0 auto 0;height:var(--testa);z-index:30;display:flex;align-items:center;gap:20px;
+  padding:0 max(18px,env(safe-area-inset-right)) 0 max(18px,env(safe-area-inset-left));
+  background:color-mix(in srgb,var(--fondo-a) 72%,transparent);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);
+  border-bottom:1px solid var(--filo)}
+.marchio{display:flex;align-items:center;text-decoration:none;margin-right:auto;padding:6px 4px;border-radius:8px;color:var(--testo)}
+.marchio .scritta{height:19px;width:auto;min-width:64px}
+.voci{display:flex;gap:4px}
+.voci a{text-decoration:none;font-size:14px;color:var(--testo-2);padding:7px 11px;border-radius:999px}
+.voci a:hover{background:var(--tocco);color:var(--testo)}
+.lingue{display:flex;padding:3px;border-radius:999px;background:var(--tocco-2)}
+.lingue button{font-size:13px;font-weight:600;letter-spacing:.02em;min-width:40px;height:30px;border-radius:999px;color:var(--testo-2)}
+.lingue button[aria-pressed="true"]{background:var(--vetro-forte);color:var(--testo);box-shadow:0 1px 3px rgba(0,0,0,.14)}
+
+/* il 3D: una tela sola, ferma dietro la pagina. C'è solo quando scena3d.js è partito (html.tre) */
+#tre{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:0;pointer-events:none;display:none}
+html.tre #tre{display:block;animation:compare 1s var(--piano) both}
+@keyframes compare{from{opacity:0}}
+main,.piede{position:relative;z-index:1}
+html.tre body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(120% 85% at 50% 36%,var(--fondo-a) 0%,var(--fondo-b) 58%,var(--fondo-c) 100%)}
+html.tre .apertura,html.tre .prima,html.tre .sistema,html.tre .palco,html.tre .vivo,html.tre .cose,html.tre .entrata,html.tre .punto,html.tre .contatto{background:none}
+/* la notte dietro il 3D: un fondo fermo, che finisce (sfumando) dove finisce il palco. «--orlo» lo scrive scena3d.js */
+#notte{position:fixed;inset:0;z-index:-1;display:none;background:radial-gradient(120% 85% at 50% 36%,#232326 0%,#19191c 58%,#101012 100%);
+  -webkit-mask-image:linear-gradient(to bottom,#000 calc(var(--orlo,300vh) - 160px),transparent var(--orlo,300vh));mask-image:linear-gradient(to bottom,#000 calc(var(--orlo,300vh) - 160px),transparent var(--orlo,300vh))}
+html.tre #notte{display:block}
+html.tre #palco-tela,html.tre #vivo-tela{display:none}
+html:not(.tre) #vivo-tre,html:not(.tre) .quota3d,html:not(.tre) .passi3d,html:not(.tre) .attrezzi3d{display:none}
+html.tre .tempi article{background:var(--vetro);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border-color:var(--bordo)}
+
+/* le parole grandi */
+h1,.grande{font-weight:700;letter-spacing:-.035em;line-height:1.02;text-wrap:balance}
+h2{font-size:clamp(34px,5.4vw,68px);font-weight:700;letter-spacing:-.03em;line-height:1.05;text-wrap:balance}
+.occhiello{font-size:14px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--colore-alburn);margin-bottom:14px}
+.cappello{font-size:clamp(18px,1.9vw,22px);color:var(--testo-2);max-width:44ch;margin-top:20px;text-wrap:pretty}
+.capo{text-align:center;display:grid;justify-items:center}
+
+/* quello che entra scorrendo (solo con il movimento) */
+html.js.mov .entra{opacity:0;transform:translateY(26px);transition:opacity .9s var(--piano),transform .9s var(--piano)}
+html.js.mov .entra.visto{opacity:1;transform:none}
+
+/* 1. L'APERTURA: il titolo sopra l'elica intera. (Le sezioni .notte hanno il loro fondo scuro; con il 3D lo dà #notte) */
+.apertura,.prima,.sistema{background:var(--fondo-b)}
+.apertura{position:relative;min-height:100vh;min-height:100svh;display:grid;justify-items:center;align-content:start;gap:0;padding:calc(var(--testa) + 3.5vh) 22px 40px;text-align:center}
+.apertura h1{font-size:clamp(50px,min(11.5vw,17vh),150px)}
+.apertura .sotto{font-size:clamp(17px,1.9vw,22px);margin:16px auto 0;max-width:48ch;text-wrap:balance;text-shadow:0 0 14px var(--fondo-b),0 0 4px var(--fondo-b)}
+html.js.mov .apertura-testo{animation:sorge .9s var(--piano) both}
+/* le foto ferme dell'elica: per chi ha chiesto meno movimento, o senza JavaScript, o se il 3D non parte. Con il 3D non
+   si caricano nemmeno (loading=lazy, e non sono mostrate) */
+.ferma{display:none;width:min(1100px,100%);height:auto;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 62%,transparent 100%)}
+html:not(.mov) .ferma,html.senza-tre .ferma{display:block}
+/* (la foto ferma dell'apertura ha in alto il vuoto del titolo: si mostra solo la parte con l'elica) */
+.apertura .ferma{margin-top:clamp(8px,2vh,24px);width:min(940px,100%);aspect-ratio:1 / 1;object-fit:cover;object-position:50% 100%}
+@media (min-width:720px){.apertura .ferma{aspect-ratio:16 / 7.6}}
+.scorri{display:none}
+html.js.mov .scorri{display:flex;flex-direction:column;align-items:center;gap:6px;position:absolute;left:0;right:0;bottom:max(18px,env(safe-area-inset-bottom));
+  font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--testo-2)}
+html.js.mov .scorri svg{animation:giu 1.8s var(--piano) infinite}
+@keyframes giu{0%,100%{transform:translateY(-3px)}50%{transform:translateY(4px)}}
+
+/* 2. OGGI: sei strumenti separati, ognuno con la sua copia della stessa misura. La misura cambia in uno, poi nel
+   seguente, poi nell'altro: mai insieme */
+.prima{padding:clamp(80px,14vh,160px) 0 clamp(64px,10vh,120px)}
+.attrezzi{margin-top:clamp(40px,7vh,72px)}
+.attrezzi ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-width:880px;margin-inline:auto}
+.attrezzi li{display:grid;gap:10px;padding:18px 18px 16px;border-radius:18px;background:var(--vetro);-webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);border:1px solid var(--bordo)}
+.attrezzi .nome{font-size:clamp(16px,1.6vw,19px);font-weight:650;letter-spacing:-.01em}
+.attrezzi .copia{display:inline-grid;font-size:14px;color:var(--testo-3)}
+.attrezzi .copia span{grid-area:1 / 1}
+.attrezzi .nuova{opacity:0;color:var(--colore-alburn)}
+.attrezzi li:nth-child(1){--i:0}.attrezzi li:nth-child(2){--i:1}.attrezzi li:nth-child(3){--i:2}.attrezzi li:nth-child(4){--i:3}.attrezzi li:nth-child(5){--i:4}.attrezzi li:nth-child(6){--i:5}
+html.mov .attrezzi .vecchia{animation:vecchia 15s linear calc(var(--i) * 1.5s) infinite}
+html.mov .attrezzi .nuova{animation:nuova 15s linear calc(var(--i) * 1.5s) infinite}
+@keyframes vecchia{0%,6%{opacity:1}9%,56%{opacity:0}59%,100%{opacity:1}}
+@keyframes nuova{0%,6%{opacity:0}9%,56%{opacity:1}59%,100%{opacity:0}}
+html:not(.mov) .attrezzi li:first-child .vecchia{opacity:0}
+html:not(.mov) .attrezzi li:first-child .nuova{opacity:1}
+.chiusa{margin:clamp(36px,6vh,60px) auto 0;text-align:center;font-size:clamp(20px,2.4vw,30px);font-weight:650;letter-spacing:-.02em;line-height:1.25;text-wrap:balance}
+
+/* 3. UNA CATENA SOLA: l'elica lega gli strumenti. Con il 3D il quadro resta fermo mentre si scorre, e i sei nomi si
+   attaccano ai pioli; senza, c'è la foto ferma, con i due versi sotto */
+.sistema{padding:clamp(80px,14vh,160px) 0 clamp(64px,10vh,120px)}
+.lega{margin-top:clamp(28px,5vh,56px)}
+.lega-fermo{position:relative;display:grid;gap:28px;justify-items:center;padding:0 22px}
+.verso{max-width:27ch;text-align:center}
+.verso h3{font-size:clamp(22px,2.3vw,30px);font-weight:700;letter-spacing:-.02em;line-height:1.12}
+.verso p{font-size:16px;color:var(--testo-2);margin-top:10px;text-wrap:pretty}
+.verso .freccia{display:block;color:var(--colore-alburn);margin:12px auto}
+.verso .freccia svg{display:block;margin-inline:auto}
+.verso .freccia.su svg{transform:rotate(180deg)}
+.attrezzi3d{position:absolute;inset:0;pointer-events:none;margin:0}
+.attrezzi3d li{position:absolute;left:0;top:0;opacity:0;white-space:nowrap;font-size:15px;font-weight:600;padding:6px 14px;border-radius:999px;
+  background:var(--vetro-forte);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--bordo);box-shadow:0 10px 26px -14px var(--ombra);will-change:transform,opacity}
+html.js.mov.tre .lega{height:230vh;margin-top:0}
+html.js.mov.tre .lega-fermo{position:sticky;top:0;height:100vh;height:100svh;display:block;padding:0;overflow:hidden}
+html.js.mov.tre .lega-tela{position:absolute;inset:0}
+html.js.mov.tre .verso{position:absolute;opacity:0;will-change:opacity,transform}
+html.js.mov.tre .verso.sopra{left:22px;right:22px;top:calc(var(--testa) + 3vh);margin-inline:auto}
+html.js.mov.tre .verso.sotto{left:22px;right:22px;bottom:4vh;margin-inline:auto}
+html.tre .verso p{color:var(--testo);text-shadow:0 0 14px var(--fondo-b),0 0 4px var(--fondo-b)}
+.aree-titolo{font-size:clamp(26px,3.4vw,44px);font-weight:700;letter-spacing:-.025em;text-align:center;text-wrap:balance;margin-top:clamp(56px,10vh,110px)}
+.aree{display:grid;gap:22px;margin-top:clamp(28px,5vh,52px)}
+.aree li{padding-top:16px;border-top:1px solid var(--filo-2)}
+.aree h4{display:grid;gap:8px;font-size:clamp(19px,1.8vw,22px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.aree .n{font-size:12.5px;font-weight:600;color:var(--colore-alburn);letter-spacing:0}
+.aree p{color:var(--testo-2);margin-top:10px;font-size:15.5px;text-wrap:pretty}
+.aree-stato{font-size:14px;color:var(--testo-3);text-align:center;margin-top:clamp(24px,4vh,40px)}
+
+
+/* 4. IL PALCO: un esempio, un mobile. Di base si legge fermo (senza movimento, o senza JavaScript): il titolo, il disegno, le didascalie in fila */
+/* nella scena il mobile resta il colore vero, e l'indaco di Alburn è il solo accento: un filo dell'elica e i numeri
+   vivi (il numero dei titoli, il valore che cambia). Il resto è nero e grigio: i passi della catena, il cursore, la
+   misura scelta, le etichette degli anelli */
+.palco,.vivo{--accento:var(--testo);--accento-testo:var(--testo);--su-accento:var(--fondo-a)}
+.palco{position:relative;background:var(--fondo-b)}
+.fermo{position:relative;padding:calc(var(--testa) + 48px) 22px 56px;display:grid;justify-items:center;gap:28px}
+#palco-tela{width:min(1100px,100%);height:min(64vh,620px);order:2}
+.didascalie{display:contents}
+.dida{text-align:center;max-width:780px;order:3}
+.dida .grande{font-size:clamp(34px,6vw,72px)}
+.dida .num{color:var(--colore-alburn);font-variant-numeric:tabular-nums}
+.dida p:not(.grande){font-size:clamp(17px,1.9vw,22px);color:var(--testo-2);margin:14px auto 0;max-width:36ch;text-wrap:pretty}
+html.tre .dida p:not(.grande){color:var(--testo);text-shadow:0 0 14px var(--fondo-a),0 0 4px var(--fondo-a)}
+.dida p.occhiello{font-size:14px;color:var(--colore-alburn);margin:0 auto 12px;max-width:none}
+.dida p.nota{font-size:14px;color:var(--testo-3);margin-top:12px;max-width:44ch}
+html.tre .dida p.occhiello{color:var(--colore-alburn);text-shadow:none}
+html.tre .dida p.nota{color:var(--testo-2)}
+.passi{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:20px;counter-reset:passo}
+.passi li{counter-increment:passo;font-size:14.5px;font-weight:600;padding:6px 14px 6px 8px;border-radius:999px;background:var(--tocco-2);display:flex;align-items:center;gap:8px}
+.passi li::before{content:"0" counter(passo);font:600 12px var(--mono);color:var(--su-accento);background:var(--accento);padding:3px 7px;border-radius:999px}
+html.tre .passi{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.passi3d{position:absolute;inset:0;pointer-events:none;margin:0}
+.passi3d li{position:absolute;left:0;top:0;opacity:0;white-space:nowrap;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;padding:6px 14px 6px 7px;border-radius:999px;
+  background:var(--vetro-forte);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--bordo);box-shadow:0 10px 26px -14px var(--ombra);will-change:transform,opacity}
+.attrezzi3d li>*,.passi3d li>*{opacity:var(--scritta,1)}
+.passi3d b{font:600 12px var(--mono);color:var(--su-accento);background:var(--accento);padding:3px 7px;border-radius:999px}
+
+/* con il movimento: il palco è lungo, il quadro resta fermo, e le didascalie passano una alla volta */
+html.js.mov .palco{height:760vh}
+html.js.mov .fermo{position:sticky;top:0;height:100vh;height:100svh;padding:0;display:block;overflow:hidden}
+html.js.mov #palco-tela{position:absolute;inset:0;width:100%;height:100%}
+html.js.mov .didascalie{display:block;position:absolute;inset:calc(var(--testa) + 3.5vh) 22px auto;height:30vh}
+html.js.mov .dida{position:absolute;inset:0 0 auto;margin:auto;opacity:0;will-change:opacity,transform}
+html.js.mov #palco-tela,html.js.mov .didascalie{animation:sorge 1.3s var(--piano) both}
+html.js.mov .didascalie{animation-duration:.9s}
+@keyframes sorge{from{opacity:0;transform:translateY(34px) scale(.97)}to{opacity:1;transform:none}}
+html.js.mov .dida .grande{font-size:clamp(34px,min(8.4vw,11vh),104px)}
+html.js.mov .dida .num{font-size:1.18em}
+html.js.mov .dida[data-d="5"] .grande{font-size:clamp(30px,min(6.2vw,8.5vh),80px)}
+
+/* 2. LA SCENA VIVA */
+.vivo{padding:clamp(72px,12vh,140px) 0 clamp(64px,10vh,120px);background:var(--fondo-b)}
+.vivo-griglia{margin-top:clamp(36px,6vh,64px);display:grid;gap:18px}
+.vivo-testa{position:sticky;top:calc(var(--testa) + 8px);z-index:10}
+.tela-carta{padding:10px 16px 12px;background:var(--vetro-forte)}
+#vivo-tela,#vivo-tre{width:100%;height:clamp(150px,24vh,220px)}
+.vista{position:relative}
+.quota3d{position:absolute;left:0;top:0;font:700 15px var(--sans);color:var(--testo);font-variant-numeric:tabular-nums;pointer-events:none;white-space:nowrap}
+.comando{display:grid;gap:6px}
+.comando label{font-size:15px;color:var(--testo-2);display:flex;align-items:baseline;gap:6px}
+.comando output{font:700 26px/1 var(--sans);letter-spacing:-.02em;color:var(--testo);font-variant-numeric:tabular-nums;min-width:3.1ch;text-align:right}
+.comando .mm{font-size:14px;color:var(--testo-3)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:32px;background:none;margin:0;cursor:ew-resize;touch-action:pan-y}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--accento) var(--pieno,33%),var(--tocco-2) var(--pieno,33%))}
+input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--tocco-2)}
+input[type=range]::-moz-range-progress{height:6px;border-radius:3px;background:var(--accento)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;margin-top:-11px;border-radius:50%;background:#fff;border:1px solid rgba(0,0,0,.12);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:#fff;border:1px solid rgba(0,0,0,.12);box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.serie{display:flex;align-items:center;gap:6px}
+.serie-nome{font-size:13px;color:var(--testo-3);margin-right:2px}
+.serie button{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;padding:5px 0;flex:1;min-height:30px;border-radius:999px;background:var(--tocco);color:var(--testo-2)}
+.serie button:hover{background:var(--tocco-2)}
+.serie button.scelta{background:var(--accento);color:var(--su-accento)}
+.semaforo{display:flex;align-items:center;gap:10px;font-size:14.5px;margin-top:10px;padding-top:10px;border-top:1px solid var(--filo);min-height:2.6em}
+.catena{display:grid;gap:14px;align-content:start;counter-reset:a}
+.anello{padding:16px 18px 18px;min-width:0;position:relative}
+.anello h3{font-size:17px;font-weight:650;letter-spacing:-.01em;display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.anello h3 .n{font:600 12px var(--mono);color:var(--accento-testo);padding:3px 7px;border-radius:7px;background:color-mix(in srgb,var(--accento) 12%,transparent)}
+.anello .nota{font-size:14.5px;color:var(--testo-2);margin-bottom:10px}
+.anello .nota.sotto{margin:10px 0 0;font-size:13.5px}
+.blocco{font-size:12.5px;line-height:1.6;padding:12px 13px;border-radius:12px;background:var(--tocco);white-space:pre-wrap;overflow-wrap:anywhere;margin:0}
+.programma{font-size:12px}
+.dna{display:grid;grid-template-columns:auto 1fr;gap:3px 14px;white-space:normal}
+.dna .t{grid-column:1 / -1;font-weight:600}
+.dna dt{color:var(--testo-2)}
+.dna dd{margin:0}
+.blocco .c{color:var(--testo-3)}
+.righe li{display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:baseline;padding:7px 0;border-top:1px solid var(--filo);font-size:14.5px}
+.righe li:first-child{border-top:0}
+.righe .cod{font:500 12.5px var(--mono);color:var(--testo-2);min-width:9ch}
+.righe .cod.nuovo{color:var(--giallo-testo)}
+.righe small{font-size:13px;color:var(--testo-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.righe .q{font-variant-numeric:tabular-nums;color:var(--testo-2)}
+.righe li.qui{font-weight:600}
+.righe .dove{grid-column:2 / -1;font:500 12.5px var(--mono);color:var(--testo-2)}
+.costo{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;padding-top:10px;border-top:1px solid var(--filo-2);font-size:15px;color:var(--testo-2)}
+.costo b{font-size:19px;color:var(--testo);font-variant-numeric:tabular-nums}
+.tavola svg{display:block;width:100%;height:auto;border-radius:12px;background:
+  linear-gradient(var(--filo) 1px,transparent 1px) 0 0/16px 16px,linear-gradient(90deg,var(--filo) 1px,transparent 1px) 0 0/16px 16px,var(--fondo-a)}
+.tavola .pezzo{fill:var(--vivo-1);fill-opacity:.55;stroke:var(--testo);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.tavola .foro{fill:var(--fondo-a);stroke:var(--testo);stroke-width:1.2;vector-effect:non-scaling-stroke}
+.tavola .dietro{fill:none;stroke:var(--testo-2);stroke-width:1.1;stroke-dasharray:3 2.5;vector-effect:non-scaling-stroke}
+.tavola .quota{stroke:var(--testo-2);stroke-width:1;fill:none;vector-effect:non-scaling-stroke}
+.tavola text{fill:var(--testo);font-family:var(--sans);font-variant-numeric:tabular-nums;text-anchor:middle}
+.tavola text.nome{text-anchor:start;fill:var(--testo-2)}
+.v{transition:color .5s}
+#scena.cambia .v{color:var(--colore-alburn);transition:none}
+.tavola text.v{transition:fill .5s}
+#scena.cambia .tavola text.v{fill:var(--colore-alburn);transition:none}
+.anello::after{content:"";position:absolute;inset:-1px;border-radius:inherit;border:2px solid var(--accento);opacity:0;pointer-events:none}
+html.mov #scena.onda .anello::after{animation:onda .7s var(--piano) calc(var(--i,0) * 70ms) 1}
+@keyframes onda{0%{opacity:0}25%{opacity:.75}100%{opacity:0}}
+.anello[data-a="1"]{--i:0}.anello[data-a="2"]{--i:1}.anello[data-a="3"]{--i:2}.anello[data-a="4"]{--i:3}.anello[data-a="5"]{--i:4}
+.avviso{font-size:14px;color:var(--testo-3);text-align:center;max-width:60ch;margin:26px auto 0}
+
+/* 5. TRE PRINCIPI, e 6. COME SI ENTRA */
+.cose{padding:clamp(80px,14vh,160px) 0 clamp(64px,10vh,120px);background:linear-gradient(var(--fondo-b),var(--fondo-a) 30%)}
+.cose > .occhiello{text-align:center;margin:0}
+.frasi{display:grid;gap:clamp(80px,22vh,240px);padding:clamp(64px,14vh,160px) 22px clamp(80px,18vh,200px);justify-items:center;text-align:center}
+.frase .grande{font-size:clamp(38px,7.2vw,100px);max-width:15ch;margin-inline:auto}
+.frase p:not(.grande){font-size:clamp(17px,1.9vw,22px);color:var(--testo-2);max-width:40ch;margin:22px auto 0;text-wrap:pretty}
+.parti{display:grid;gap:28px;margin-top:clamp(32px,6vh,60px)}
+.parti li{padding-top:18px;border-top:1px solid var(--filo-2)}
+.parti .n{display:block;font-size:12.5px;font-weight:600;color:var(--colore-alburn);margin-bottom:10px}
+.parti .ruolo{font-size:clamp(22px,2.3vw,28px);font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-top:2px}
+.parti p:not(.ruolo){color:var(--testo-2);margin-top:12px;font-size:16px;text-wrap:pretty}
+
+/* 7. LO STATO DEL PRODOTTO */
+.entrata{padding:clamp(40px,8vh,100px) 0 clamp(80px,14vh,160px);background:var(--fondo-a)}
+.punto{padding:clamp(80px,14vh,160px) 0;background:var(--fondo-a)}
+.tempi{display:grid;gap:14px;margin-top:clamp(36px,6vh,64px)}
+.tempi article{padding:24px 22px 26px;border-radius:22px;background:var(--fondo-b);border:1px solid var(--filo)}
+.tempi h3{display:flex;align-items:center;gap:12px;font-size:clamp(22px,2.3vw,28px);font-weight:700;letter-spacing:-.02em}
+.tempi ul{margin-top:14px}
+.tempi li{padding:12px 0;border-top:1px solid var(--filo);font-size:16px;color:var(--testo-2);text-wrap:pretty}
+
+/* 8. CONTATTO, e il piede */
+.indirizzo{margin-top:18px;font-size:15px;color:var(--testo-2)}
+.indirizzo a{text-underline-offset:3px}
+.contatto{padding:clamp(96px,18vh,200px) 0;text-align:center;background:radial-gradient(110% 90% at 50% 100%,var(--fondo-c) 0%,var(--fondo-b) 55%,var(--fondo-a) 100%)}
+.contatto h2{font-size:clamp(48px,9vw,120px)}
+.contatto .cappello{margin-inline:auto}
+.posta{display:inline-block;margin-top:34px;padding:16px 30px;border-radius:999px;background:var(--accento);color:var(--su-accento);font-size:clamp(19px,2.2vw,24px);font-weight:650;text-decoration:none;
+  box-shadow:0 14px 36px -14px color-mix(in srgb,var(--accento) 80%,transparent);transition:transform .25s var(--piano)}
+.posta:hover{transform:translateY(-2px)}
+.piede{padding:30px 0 max(34px,env(safe-area-inset-bottom));border-top:1px solid var(--filo);background:var(--fondo-b);font-size:14px;color:var(--testo-2);text-align:center}
+.piede p{max-width:70ch;margin-inline:auto}
+.piede p + p{margin-top:8px;color:var(--testo-3)}
+
+/* da 720 punti: più aria, tre colonne dove serve */
+@media (min-width:720px){
+  .largo{width:min(1180px,100% - 96px)}
+  .parti,.tempi{grid-template-columns:repeat(3,1fr)}
+  .attrezzi ul{grid-template-columns:repeat(3,minmax(0,1fr));gap:26px 34px}
+  .attrezzi li:nth-child(1){transform:translate(-10px,6px) rotate(-1.4deg)}.attrezzi li:nth-child(2){transform:translate(4px,-12px) rotate(.9deg)}.attrezzi li:nth-child(3){transform:translate(12px,10px) rotate(1.8deg)}
+  .attrezzi li:nth-child(4){transform:translate(8px,4px) rotate(1.1deg)}.attrezzi li:nth-child(5){transform:translate(-6px,16px) rotate(-.8deg)}.attrezzi li:nth-child(6){transform:translate(-12px,-4px) rotate(-1.9deg)}
+  .aree{grid-template-columns:repeat(2,1fr);gap:26px 34px}
+  html.js.mov.tre .verso{max-width:25ch}
+  html.js.mov.tre .verso.sopra{left:max(40px,7vw);right:auto;top:calc(var(--testa) + 10vh);text-align:left}
+  html.js.mov.tre .verso.sotto{right:max(40px,7vw);left:auto;bottom:11vh;text-align:right}
+  html.js.mov.tre .verso.sopra .freccia svg{margin-inline:0 auto}
+  html.js.mov.tre .verso.sotto .freccia svg{margin-inline:auto 0}
+  .parti{gap:40px}
+  .tempi article:first-child{grid-row:span 2}
+  .catena{grid-template-columns:1fr 1fr}
+  .anello[data-a="1"],.anello[data-a="2"],.anello[data-a="5"]{grid-column:1 / -1}
+  #vivo-tela,#vivo-tre{height:clamp(190px,30vh,280px)}
+  .tela-carta{padding:14px 22px 16px}
+}
+/* da 1100: la scena con la misura a sinistra, ferma, e la catena a destra */
+@media (min-width:1100px){
+  .vivo-griglia{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:22px;align-items:start}
+  .vivo-testa{top:calc(var(--testa) + 24px)}
+  #vivo-tela,#vivo-tre{height:clamp(240px,38vh,380px)}
+  .tempi{grid-template-columns:1.25fr 1fr 1fr}
+  .aree{grid-template-columns:repeat(5,1fr);gap:26px}
+  .tempi article:first-child{grid-row:auto}
+}
+/* da 1280: tutta la catena sotto gli occhi insieme, su tre colonne */
+@media (min-width:1280px){
+  .vivo .largo{width:min(1360px,100% - 150px)}
+  .vivo-griglia{grid-template-columns:minmax(0,3.5fr) minmax(0,8.5fr)}
+  .catena{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .anello[data-a="1"],.anello[data-a="5"]{grid-column:auto}
+  .anello[data-a="2"]{grid-column:2 / -1}
+  #vivo-tela,#vivo-tre{height:clamp(220px,32vh,320px)}
+}
+@media (max-width:719px){
+  .voci{display:none}
+  .verso h3{font-size:20px}
+  .verso p{font-size:14.5px;margin-top:6px}
+  .verso .freccia{margin:6px auto}
+  .attrezzi3d li{font-size:13.5px;padding:5px 11px}
+  .tela-carta{border-radius:18px}
+  #vivo-tela,#vivo-tre{height:clamp(120px,19vh,170px)}
+  .serie-nome{display:none}
+  .semaforo{margin-top:8px;padding-top:8px;font-size:13.5px}
+  .righe .cod{min-width:0}
+}
+
+/* chi chiede meno movimento: niente transizioni, niente cose che si muovono da sole */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
