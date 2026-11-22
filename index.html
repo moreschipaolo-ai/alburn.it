@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title data-t="meta.titolo">Alburn. Un sistema solo, attorno all’articolo.</title>
 <meta name="description" data-t-content="meta.descrizione" content="Alburn è un sistema solo per tutto quello che ruota attorno all’articolo: tecnico, produzione, scorte e riordini, acquisti, commerciale. Per le aziende dell’arredo.">
-<meta name="theme-color" content="#19191c">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#e2ded6">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#19191c">
 <meta name="color-scheme" content="light dark">
 <meta name="referrer" content="no-referrer">
 <link rel="canonical" href="https://alburn.it/">
@@ -23,7 +24,6 @@
 <body>
 
 <canvas id="tre" aria-hidden="true"></canvas>
-<div id="notte" aria-hidden="true"></div>
 
 <a class="salta" href="#prima" data-t="salta">Vai al contenuto</a>
 
@@ -46,19 +46,18 @@
 
 <main id="cima">
 
-<!-- 1. L'APERTURA: il titolo sopra l'elica intera, con il mobile piccolo dentro, tenuto dai rami. Da qui al mobile
-     che si apre è sempre notte, per tutti (Paolo, 21 novembre): il resto della pagina segue il tema del computer -->
-<section class="apertura notte" id="apertura">
+<!-- 1. L'APERTURA: il titolo, e sotto il mobile d'esempio, grande, dentro l'elica a filo (come nella prima versione) -->
+<section class="apertura" id="apertura">
   <div class="apertura-testo">
-    <h1 data-t="hero.titolo">Tutto legato.</h1>
+    <h1 data-t="hero.titolo">Tutto collegato.</h1>
     <p class="sotto" data-t="hero.sotto">Un sistema solo per tutto quello che ruota attorno all’articolo.<br>Dal foro alla fabbrica, una catena sola.</p>
   </div>
-  <img class="ferma" src="ferma/elica.jpg" width="1600" height="1000" alt="" loading="lazy" decoding="async">
-  <p class="scorri" aria-hidden="true"><span data-t="hero.scorri">Scorrere</span><svg viewBox="0 0 12 18" width="12" height="18"><path d="M6 1v15M1 11l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="ferma/elica_scuro.jpg"><img class="ferma" src="ferma/elica.jpg" width="1600" height="1000" alt="" loading="lazy" decoding="async"></picture>
+  <p class="scorri" aria-hidden="true"><span data-t="hero.scorri">Scorri</span><svg viewBox="0 0 12 18" width="12" height="18"><path d="M6 1v15M1 11l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
 </section>
 
 <!-- 2. OGGI: tanti sistemi, tanti archivi. Sei sistemi, ognuno con la sua copia della stessa misura -->
-<section class="prima notte" id="prima">
+<section class="prima" id="prima">
   <div class="largo">
     <div class="capo entra">
       <p class="occhiello" data-t="prima.occhiello">Il punto di partenza</p>
@@ -75,12 +74,12 @@
         <li><span class="nome" data-t="prima.6">i listini</span><span class="copia mono"><span class="vecchia">800&nbsp;mm</span><span class="nuova">900&nbsp;mm</span></span></li>
       </ul>
     </div>
-    <p class="chiusa entra" data-t="prima.chiusa">La stessa misura è scritta in sei posti.<br>Quando cambia, va cambiata sei volte.</p>
+    <p class="chiusa entra" data-t="prima.chiusa">Lo stesso dato è scritto in molti archivi.<br>Quando cambia, va cambiato ovunque.</p>
   </div>
 </section>
 
 <!-- 3. UNA CATENA SOLA: l'elica lega i sistemi. Da sopra scende la richiesta, da sotto sale l'opportunità -->
-<section class="sistema notte" id="sistema">
+<section class="sistema" id="sistema">
   <div class="largo">
     <div class="capo entra">
       <p class="occhiello" data-t="catena.occhiello">Il sistema</p>
@@ -91,7 +90,7 @@
   <div class="lega" id="lega">
     <div class="lega-fermo">
       <div class="lega-tela" role="img" data-t-aria="catena.tela" aria-label="L’elica lega i sistemi in una catena sola">
-        <img class="ferma" src="ferma/catena.jpg" width="1600" height="1000" alt="" loading="lazy" decoding="async">
+        <picture><source media="(prefers-color-scheme: dark)" srcset="ferma/catena_scuro.jpg"><img class="ferma" src="ferma/catena.jpg" width="1600" height="1000" alt="" loading="lazy" decoding="async"></picture>
         <ol class="attrezzi3d" aria-hidden="true"><li><span data-t="prima.1">gli ordini</span></li><li><span data-t="prima.2">i disegni</span></li><li><span data-t="prima.3">le distinte</span></li><li><span data-t="prima.4">i programmi</span></li><li><span data-t="prima.5">le scorte</span></li><li><span data-t="prima.6">i listini</span></li></ol>
       </div>
       <div class="verso sopra">
@@ -115,13 +114,12 @@
       <li class="entra"><h4><span class="n mono">04</span><span data-t="area.4.nome">Acquisti</span></h4><p data-t="area.4.testo">I componenti e le lavorazioni esterne hanno i loro fornitori e i loro costi.</p></li>
       <li class="entra"><h4><span class="n mono">05</span><span data-t="area.5.nome">Commerciale</span></h4><p data-t="area.5.testo">Il listino e l’offerta leggono il costo dalla distinta.</p></li>
     </ol>
-    <p class="aree-stato entra" data-t="aree.stato">Lo stato di ogni area è più sotto.</p>
   </div>
 </section>
 
 <!-- 4. UN ESEMPIO: UN MOBILE. La camera vola lungo la spirale fino al mobile; il mobile si apre, si scompone, nascono i
      fori. Con il movimento il quadro resta fermo mentre si scorre; senza, si legge fermo -->
-<section class="palco notte" id="apri" data-t-aria="palco.aria" aria-label="Il mobile d’esempio si apre">
+<section class="palco" id="apri" data-t-aria="palco.aria" aria-label="Il mobile d’esempio si apre">
   <div class="fermo">
     <canvas id="palco-tela" role="img" data-t-aria="palco.tela" aria-label="Un arredo d’esempio, disegnato a fil di ferro: scorrendo la pagina si apre in pannelli e ferramenta, e sul fianco compaiono i fori"></canvas>
     <div class="didascalie">
@@ -209,7 +207,7 @@
         </li>
       </ol>
     </div>
-    <p class="avviso entra" data-t="vivo.avviso">La scena è un esempio, con dati d’esempio.<br>I programmi mostrati non vanno in macchina.</p>
+    <p class="avviso entra" data-t="vivo.avviso">La scena è un esempio, con dati d’esempio.</p>
   </div>
 </section>
 
@@ -218,21 +216,21 @@
   <h2 class="occhiello" data-t="cose.occhiello">Tre principi</h2>
   <div class="frasi">
     <div class="frase entra"><h3 class="grande" data-t="p1.grande">Il pezzo si descrive una volta sola.</h3><p data-t="p1.sotto">Il modello, la tavola, la distinta e il programma si leggono da quella descrizione.<br>Niente è da riallineare a mano.</p></div>
-    <div class="frase entra"><h3 class="grande" data-t="p2.grande">Il fuori serie ha un costo, non un no.</h3><p data-t="p2.sotto">Per un pezzo fuori serie Alburn dà il costo e le strade.<br>Chi progetta sceglie.<br>Alburn si ferma solo davanti all’impossibile.</p></div>
+    <div class="frase entra"><h3 class="grande" data-t="p2.grande">Il fuori serie ha il suo costo, subito.</h3><p data-t="p2.sotto">Per un pezzo fuori serie Alburn dà il costo e le strade possibili.<br>Chi progetta sceglie.<br>Poi il pezzo va in produzione come uno di serie.</p></div>
     <div class="frase entra"><h3 class="grande" data-t="p3.grande">Come nel piccolo, così nel grande.</h3><p data-t="p3.sotto">La stessa regola vale nel foro e nella fabbrica.<br>Il pezzo sta nel mobile, il mobile nella gamma, la gamma nella produzione.<br>Ogni livello è fatto come gli altri.</p></div>
   </div>
 </section>
 
-<!-- 6. COME SI COMINCIA -->
+<!-- 6. COME SI PASSA AD ALBURN -->
 <section class="entrata" id="entra">
   <div class="largo">
     <div class="capo entra">
-      <p class="occhiello" data-t="entra.occhiello">Come si comincia</p>
+      <p class="occhiello" data-t="entra.occhiello">Come si passa ad Alburn</p>
       <h2 data-t="entra.titolo">Un passo alla volta.</h2>
     </div>
     <ol class="parti">
       <li class="entra"><span class="n mono">01</span><h3 class="ruolo" data-t="entra.1.grande">Alburn legge quello che c’è.</h3><p data-t="entra.1.sotto">Parte dal gestionale e dagli archivi che l’azienda ha già.</p></li>
-      <li class="entra"><span class="n mono">02</span><h3 class="ruolo" data-t="entra.2.grande">Prende un’area alla volta.</h3><p data-t="entra.2.sotto">Prima l’articolo e il tecnico, poi la produzione, poi gli acquisti.</p></li>
+      <li class="entra"><span class="n mono">02</span><h3 class="ruolo" data-t="entra.2.grande">Prende un’area alla volta.</h3><p data-t="entra.2.sotto">Prima l’articolo e il tecnico, poi la produzione e il magazzino, poi gli acquisti.</p></li>
       <li class="entra"><span class="n mono">03</span><h3 class="ruolo" data-t="entra.3.grande">Contabilità e fisco restano dove sono.</h3><p data-t="entra.3.sotto">Restano a un gestionale classico.</p></li>
     </ol>
   </div>
@@ -244,7 +242,7 @@
     <div class="capo entra">
       <p class="occhiello" data-t="punto.occhiello">Lo stato</p>
       <h2 data-t="punto.titolo">A che punto siamo.</h2>
-      <p class="cappello" data-t="punto.cappello">Alburn è in sviluppo.<br>Ogni funzione elencata sotto «oggi» è provata da un test automatico, su un’azienda d’esempio.</p>
+      <p class="cappello" data-t="punto.cappello">Alburn è in sviluppo.<br>Ogni funzione elencata sotto «oggi» è provata da un test automatico.</p>
     </div>
     <div class="tempi">
       <article class="entra">

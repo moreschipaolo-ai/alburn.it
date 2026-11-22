@@ -286,9 +286,7 @@
     });
   }
   function muoviPalco() {
-    // dall'apertura alla fine del palco è notte: finché la barra ci sta sopra, prende i colori della notte
     const r = palco.getBoundingClientRect();
-    radice.classList.toggle('su-notte', r.bottom > 28);
     if (!mov) return;
     const corsa = r.height - innerHeight;
     pPalco = corsa > 0 ? lim(-r.top / corsa, 0, 1) : 0;

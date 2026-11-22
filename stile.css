@@ -28,7 +28,7 @@
      piolo acceso, il frontale in evidenza, i segni, quanto è scura l'ombra per terra, quanta luce prende la foto
      (l'esposizione dello sviluppo ACES). Il rovere sta in scena3d.js */
   --tre-frontale:#2b3037; --tre-ceramica:#c8c4bc; --tre-filo-a:var(--colore-alburn); --tre-filo:#84878c; --tre-piolo:#a4a7ab; --tre-acceso:#17181a; --tre-evidenza:#9a9da2; --tre-segno:#1d1d1f;
-  --tre-ombra:.3; --tre-esposizione:.8; --tre-polvere:#fff6e6; --tre-polvere-forza:.16;
+  --tre-ombra:.3; --tre-esposizione:.8;
   --sans:system-ui,"Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
   --piano:cubic-bezier(.3,.7,.2,1);
@@ -47,30 +47,8 @@
   --vivo-1:#7b7d83; --vivo-2:#696b71; --vivo-3:#595b60;
   --spigolo:#eceae4; --foro:#101012; --foro-dentro:#cfc3a8; --segno:#eceae4;
   --tre-frontale:#30353d; --tre-ceramica:#b4b0a8; --tre-filo:#73767c; --tre-piolo:#565960; --tre-acceso:#ffffff; --tre-evidenza:#8f9298; --tre-segno:#eceae4;
-  --tre-ombra:.5; --tre-esposizione:.74; --tre-polvere:#ffe9c8; --tre-polvere-forza:.5;
+  --tre-ombra:.5; --tre-esposizione:.74;
 }}
-
-/* LA NOTTE (Paolo, 21 novembre: «il palco dell'elica è sempre notte, per tutti»). Dall'apertura al mobile che si apre
-   la pagina è scura anche per chi ha il computer in chiaro; il resto segue il tema. Sono gli stessi colori del tema
-   scuro qui sopra: se cambiano lì, cambiano anche qui (in coda, le tre variabili che prendono il colore di Alburn:
-   vanno ridette, perché una variabile si calcola dove è scritta). La barra li prende finché sta sopra la notte (html.su-notte) */
-.notte,html.su-notte .testa{
-  --fondo-a:#232326; --fondo-b:#19191c; --fondo-c:#101012;
-  --testo:#f3f2ef; --testo-2:#b9b7b1; --testo-3:#96948e;
-  --vetro:rgba(52,52,58,.62); --vetro-forte:rgba(40,40,45,.88); --bordo:rgba(255,255,255,.13); --filo:rgba(255,255,255,.1); --filo-2:rgba(255,255,255,.2);
-  --luce:rgba(255,255,255,.14); --ombra:rgba(0,0,0,.55); --tocco:rgba(255,255,255,.07); --tocco-2:rgba(255,255,255,.12);
-  --colore-alburn:var(--indaco-chiaro); --su-accento:#0d1420; --verde:#4cc38a; --giallo:#f0b34a; --giallo-testo:#f0b34a; --rosso:#ff6b66;
-  --legno-1:#48484e; --legno-2:#3c3c42; --legno-3:#313136;
-  --frontale-1:#3a3b41; --frontale-2:#2f3035; --frontale-3:#26272b;
-  --ceramica-1:#5a5a60; --ceramica-2:#4b4b51; --ceramica-3:#3e3e44;
-  --metallo-1:#6c6f75; --metallo-2:#5c5f65; --metallo-3:#4c4f55;
-  --vivo-1:#7b7d83; --vivo-2:#696b71; --vivo-3:#595b60;
-  --spigolo:#eceae4; --foro:#101012; --foro-dentro:#cfc3a8; --segno:#eceae4;
-  --tre-frontale:#30353d; --tre-ceramica:#b4b0a8; --tre-filo:#73767c; --tre-piolo:#565960; --tre-acceso:#ffffff; --tre-evidenza:#8f9298; --tre-segno:#eceae4;
-  --tre-ombra:.5; --tre-esposizione:.74; --tre-polvere:#ffe9c8; --tre-polvere-forza:.5;
-  --accento:var(--colore-alburn); --accento-testo:var(--colore-alburn); --tre-filo-a:var(--colore-alburn);
-  color:var(--testo)}
-
 
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:calc(var(--testa) + 12px)}
@@ -114,10 +92,6 @@ html.tre #tre{display:block;animation:compare 1s var(--piano) both}
 main,.piede{position:relative;z-index:1}
 html.tre body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(120% 85% at 50% 36%,var(--fondo-a) 0%,var(--fondo-b) 58%,var(--fondo-c) 100%)}
 html.tre .apertura,html.tre .prima,html.tre .sistema,html.tre .palco,html.tre .vivo,html.tre .cose,html.tre .entrata,html.tre .punto,html.tre .contatto{background:none}
-/* la notte dietro il 3D: un fondo fermo, che finisce (sfumando) dove finisce il palco. «--orlo» lo scrive scena3d.js */
-#notte{position:fixed;inset:0;z-index:-1;display:none;background:radial-gradient(120% 85% at 50% 36%,#232326 0%,#19191c 58%,#101012 100%);
-  -webkit-mask-image:linear-gradient(to bottom,#000 calc(var(--orlo,300vh) - 160px),transparent var(--orlo,300vh));mask-image:linear-gradient(to bottom,#000 calc(var(--orlo,300vh) - 160px),transparent var(--orlo,300vh))}
-html.tre #notte{display:block}
 html.tre #palco-tela,html.tre #vivo-tela{display:none}
 html:not(.tre) #vivo-tre,html:not(.tre) .quota3d,html:not(.tre) .passi3d,html:not(.tre) .attrezzi3d{display:none}
 html.tre .tempi article{background:var(--vetro);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border-color:var(--bordo)}
@@ -133,7 +107,7 @@ h2{font-size:clamp(34px,5.4vw,68px);font-weight:700;letter-spacing:-.03em;line-h
 html.js.mov .entra{opacity:0;transform:translateY(26px);transition:opacity .9s var(--piano),transform .9s var(--piano)}
 html.js.mov .entra.visto{opacity:1;transform:none}
 
-/* 1. L'APERTURA: il titolo sopra l'elica intera. (Le sezioni .notte hanno il loro fondo scuro; con il 3D lo dà #notte) */
+/* 1. L'APERTURA: il titolo, e sotto il mobile grande dentro l'elica a filo */
 .apertura,.prima,.sistema{background:var(--fondo-b)}
 .apertura{position:relative;min-height:100vh;min-height:100svh;display:grid;justify-items:center;align-content:start;gap:0;padding:calc(var(--testa) + 3.5vh) 22px 40px;text-align:center}
 .apertura h1{font-size:clamp(50px,min(11.5vw,17vh),150px)}
@@ -141,6 +115,7 @@ html.js.mov .entra.visto{opacity:1;transform:none}
 html.js.mov .apertura-testo{animation:sorge .9s var(--piano) both}
 /* le foto ferme dell'elica: per chi ha chiesto meno movimento, o senza JavaScript, o se il 3D non parte. Con il 3D non
    si caricano nemmeno (loading=lazy, e non sono mostrate) */
+picture{display:contents}
 .ferma{display:none;width:min(1100px,100%);height:auto;-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 62%,transparent 100%)}
 html:not(.mov) .ferma,html.senza-tre .ferma{display:block}
 /* (la foto ferma dell'apertura ha in alto il vuoto del titolo: si mostra solo la parte con l'elica) */
@@ -198,7 +173,6 @@ html.tre .verso p{color:var(--testo);text-shadow:0 0 14px var(--fondo-b),0 0 4px
 .aree h4{display:grid;gap:8px;font-size:clamp(19px,1.8vw,22px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
 .aree .n{font-size:12.5px;font-weight:600;color:var(--colore-alburn);letter-spacing:0}
 .aree p{color:var(--testo-2);margin-top:10px;font-size:15.5px;text-wrap:pretty}
-.aree-stato{font-size:14px;color:var(--testo-3);text-align:center;margin-top:clamp(24px,4vh,40px)}
 
 
 /* 4. IL PALCO: un esempio, un mobile. Di base si legge fermo (senza movimento, o senza JavaScript): il titolo, il disegno, le didascalie in fila */

@@ -11,16 +11,16 @@
 // Il modello (i pezzi, i fori) e il copione (quando si apre, quando nascono i fori) sono quelli di scena.js: qui si
 // disegna soltanto. three.js sta nella cartella three/, copiato com'è con la sua licenza, e con lui la stanza della luce
 // e il passaggio dell'occlusione (three/addons/, dagli esempi di three.js, copiati com'erano): niente si carica da
-// altri siti. La venatura e la stanza si disegnano qui, una volta, e la pagina parte con quelle; poi arrivano, dalla
-// sua stessa cartella, la foto di uno studio (luce/) e un rovere fotografato (legno/), di Poly Haven, licenza CC0
-// (CREDITI.md), e prendono il loro posto (il terzo giro, 21 novembre notte).
+// altri siti. La venatura e la stanza si disegnano qui, una volta, e la pagina parte con quelle; poi arriva, dalla sua
+// stessa cartella, un rovere fotografato (legno/), di Poly Haven, licenza CC0 (CREDITI.md), e prende il posto di quello
+// disegnato. La luce resta quella della stanza disegnata: la foto dello studio (1,6 MB) è stata tolta il 22 novembre,
+// perché la pagina pesava troppo (Paolo).
 // Senza WebGL, o per chi chiede meno movimento, questo file non fa niente: resta il disegno a spigoli di scena.js.
 import * as THREE from './three/three.module.js';
 import {RoomEnvironment} from './three/addons/environments/RoomEnvironment.js';
-import {HDRLoader} from './three/addons/loaders/HDRLoader.js';
 import {GTAOPass} from './three/addons/postprocessing/GTAOPass.js';
 import {FullScreenQuad} from './three/addons/postprocessing/Pass.js';
-import {MONDO, creaElicaViva, creaPolvere, nuovaPosa, mistaPose, metti} from './elica.js';
+import {creaElicaFilo, nuovaPosa, metti} from './elica.js';
 
 const A = window.ALBURN, SC = A && A.scena, doc = document, radice = doc.documentElement;
 const lim = (x, a, b) => Math.min(b, Math.max(a, x)), tratto = (p, a, b) => lim((p - a) / (b - a), 0, 1), dolce = x => x * x * (3 - 2 * x), misto = (a, b, k) => a + (b - a) * k;
@@ -31,7 +31,7 @@ if (SC && SC.mov()) { try { avvia(); } catch (e) { radice.classList.add('senza-t
 function avvia() {
   const {P, H, S} = SC.misure, V3 = THREE.Vector3;
   const telaGrande = doc.getElementById('tre'), telaViva = doc.getElementById('vivo-tre');
-  let dove = radice;   // da quale elemento si leggono i colori: la pagina, oppure una sezione della notte
+  let dove = radice;   // da quale elemento si leggono i colori
   const stile = () => getComputedStyle(dove), colore = n => new THREE.Color(stile().getPropertyValue(n).trim());
 
   // ---------------------------------------------------------------------------------------------------------------
@@ -254,16 +254,11 @@ function avvia() {
     return {sole, terra};
   }
   // quanta luce: il sole, la stanza (e di quanto è girata attorno al mobile), lo sfumo dell'ombra, il pannello di studio, la luce di fondo dell'interno;
-  // poi lo studio vero (l'HDRI): quanto illumina, di quanto è girato, il tetto alle sue lampade, il pannello appeso sopra
-  const LUCE = {sole: 1.9, stanza: 0.75, giro: 0, sfumo: 3.5, bank: 1.7, dentro: 0.8, studio: 0.9, giroStudio: 235, tetto: 12, cielo: 2.5, mondo: 0.4};
+  const LUCE = {sole: 1.9, stanza: 0.75, giro: 0, sfumo: 3.5, bank: 1.7, dentro: 0.8};
   const numero = (n, senza) => { const v = parseFloat(stile().getPropertyValue(n)); return isFinite(v) ? v : senza; };
   const tinte = () => ({frontale: colore('--tre-frontale'), ceramica: colore('--tre-ceramica'), evidenza: colore('--tre-evidenza'), filoA: colore('--tre-filo-a'), filo: colore('--tre-filo'), piolo: colore('--tre-piolo'), acceso: colore('--tre-acceso'), segno: colore('--tre-segno'),
-    ombra: numero('--tre-ombra', 0.3), esposizione: numero('--tre-esposizione', 0.9), polvere: colore('--tre-polvere'), polvereForza: numero('--tre-polvere-forza', 0.5)});
+    ombra: numero('--tre-ombra', 0.3), esposizione: numero('--tre-esposizione', 0.9)});
   let tinta = tinte();
-  // LA NOTTE: dall'apertura al palco la scena grande ha sempre i colori della notte, per tutti (Paolo, 21 novembre). La
-  // scena viva, più sotto, segue il tema del computer
-  const quiNotte = doc.getElementById('apri'), tinteNotte = () => { dove = quiNotte; const t = tinte(); dove = radice; return t; };
-  let tintaNotte = tinteNotte();
   const geoDisco = new THREE.CircleGeometry(1, 24), geoAnello = new THREE.RingGeometry(1.05, 1.42, 32);
   const SEGNO_CHIARO = 0xf2efe8;   // gli anelli e i fili dei fori stanno sempre sull'antracite: chiari. Nella scena non c'è il blu
   // lo sviluppo, come una pellicola: ACES. Le ombre con il bordo sfumato (PCF)
@@ -384,18 +379,15 @@ function avvia() {
   scena.environment = ambiente(R1);
   const L1 = luci(scena, 1900);
   const mobile = costruisci(SC.mob800, M1, {propri: true}); scena.add(mobile.gruppo);
-  const mondo = creaElicaViva({tinta: tintaNotte, M: M1}), elica = mondo.gruppo; scena.add(elica); scena.add(mondo.bracci);
+  const mondo = creaElicaFilo({tinta, grosso: 7, fondo: -(doc.documentElement.scrollHeight * 0.85 + 4200)}), elica = mondo.gruppo; scena.add(elica);
   // (i pezzi del mobile hanno le loro copie dei materiali: questi sono solo dell'elica. Rispondono meno alla stanza: così il
   // sole fa il chiaro e lo scuro, come all'aperto)
-  ['legno', 'frontale', 'ceramica', 'lamiera', 'metallo'].forEach(n => { M1[n].envMapIntensity = LUCE.mondo; });
-  const RM = MONDO.R, PM = MONDO.P, DUE_PI = Math.PI * 2;
-  // la polvere nella luce: si disegna dopo lo sviluppo, sopra la foto
-  const polvere = creaPolvere(260, 7000, 4200), scenaPolvere = new THREE.Scene(); scenaPolvere.add(polvere.punti);
+  const DUE_PI = Math.PI * 2;
   // i cinque pioli sotto il mobile che diventano i passaggi (il primo sotto il mobile è ritirato: si parte dal secondo)
-  const sotto = mondo.pioli.filter(p => p.y < -500).sort((a, b) => b.y - a.y), PASSI = sotto.slice(1, 6).map(p => p.y);
+  const PASSI = [-780, -1040, -1300, -1560, -1820];
   // nella sezione «Una catena sola» i sei strumenti si attaccano a sei pioli: l'elica li lega
-  const PIOLI_NOMI = sotto.slice(1, 7), ATTREZZI = PIOLI_NOMI.map(p => p.y), accesi = [0, 0, 0, 0, 0, 0];
-  const apertura = doc.getElementById('apertura'), lega = doc.getElementById('lega'), fondoNotte = doc.getElementById('notte');
+  const ATTREZZI = [-650, -910, -1170, -1430, -1690, -1950], accesi = [0, 0, 0, 0, 0, 0];
+  const apertura = doc.getElementById('apertura'), lega = doc.getElementById('lega');
   const testoApertura = doc.querySelector('.apertura-testo'), attrezzi = Array.from(doc.querySelectorAll('.attrezzi3d li')), versi = Array.from(doc.querySelectorAll('#lega .verso'));
   const cTmp = new THREE.Color(), pTmp = new V3(), pTmp2 = new V3();
   const etichette = Array.from(doc.querySelectorAll('.passi3d li'));
@@ -408,7 +400,7 @@ function avvia() {
     e.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) translate(-50%,-50%) scale(${misto(0.3, 1, dolce(tratto(k, 0, 0.6))).toFixed(3)})`;
   };
   // quando arrivano i due versi della catena («Da sopra, la richiesta», «Da sotto, l'opportunità»), nello scorrere del quadro fermo
-  const VERSI = [0.5, 0.72], misure = {nomi: [], versi: []}; let giroMisure = 0;
+  const VERSI = [0.5, 0.72], misure = {nomi: [], versi: [], dida: 0}, dide = Array.from(doc.querySelectorAll('#apri .dida')); let giroMisure = 0;
   function coloraPioli(st, ora, yGuardato, mezza) {
     mondo.accendi(p => {
       let k = 0; const j = PASSI.indexOf(p.y), ja = ATTREZZI.indexOf(p.y);
@@ -423,16 +415,12 @@ function avvia() {
   const palco = doc.getElementById('apri'), contatto = doc.getElementById('contatto');
   let larga = 0, alta = 0;
   // per l'occlusione non contano l'elica, la macchia per terra, i segni dei fori e i pezzi velati
-  const S1 = sviluppo(R1, scena, cam, () => [elica, mondo.bracci, L1.terra].concat(mobile.segni, mobile.parti.filter(q => q.velato).map(q => q.ogg)), true);
-  function misuraGrande() { larga = innerWidth; alta = innerHeight; R1.setSize(larga, alta, false); S1.misura(larga, alta); cam.aspect = larga / alta; cam.updateProjectionMatrix();
-    polvere.u.uSchermo.value.set(larga * R1.getPixelRatio(), alta * R1.getPixelRatio()); polvere.u.uAlta.value = alta * R1.getPixelRatio(); }
+  const S1 = sviluppo(R1, scena, cam, () => [elica, L1.terra].concat(mobile.segni, mobile.parti.filter(q => q.velato).map(q => q.ogg)));
+  function misuraGrande() { larga = innerWidth; alta = innerHeight; R1.setSize(larga, alta, false); S1.misura(larga, alta); cam.aspect = larga / alta; cam.updateProjectionMatrix(); }
 
-  // LE POSE DELLA CAMERA. Una posa è un punto attorno all'asse dell'elica (angolo, raggio, quota) e un punto guardato:
-  // fra due pose si va lungo una spirale. Ogni posa porta anche la sua ottica: il piano a fuoco, l'apertura, l'aria
-  const OTTICA = ['fuoco', 'ap', 'n0', 'nL', 'alto0', 'alto1', 'basso0', 'basso1', 'fov'];
+  // LA POSA DELLA CAMERA: un punto attorno all'asse dell'elica (angolo, raggio, quota) e un punto guardato, con la sua ottica
   const nuova = () => Object.assign(nuovaPosa(0, 1, 0), {fuoco: 4000, ap: 0, n0: 1e6, nL: 1e6, alto0: 9000, alto1: 26000, basso0: -9000, basso1: -30000, fov: 25});
-  const pLargo = nuova(), pPalco = nuova(), pVolo = nuova(), pVoloA = nuova(), pVoloB = nuova(), pTmp3 = nuova(), pTmp4 = nuova(), pCatena = nuova(), pGiu = nuova(), pFine = nuova(), pOra = nuova();
-  const mista = (A, B, k, esce) => { mistaPose(A, B, k, esce); OTTICA.forEach(n => { esce[n] = misto(A[n], B[n], k); }); return esce; };
+  const pOra = nuova();
   // lo sguardo di prima, scritto come posa: guarda «centro» da davanti a sinistra (az) e dall'alto (el), alla distanza
   // che fa stare mezza larghezza «hw» e mezza altezza «hh» in una parte «parte» della tela (o alla distanza «dFissa»)
   function guardaPosa(esce, centro, hw, hh, az, el, parte, su, lato, dFissa) {
@@ -442,14 +430,7 @@ function avvia() {
     let a = Math.atan2(z, x); a += Math.round((verso - a) / DUE_PI) * DUE_PI;
     esce.a = a; esce.r = Math.hypot(x, z); esce.y = cy + Math.sin(el) * d; esce.mira.set(cx, cy, cz); esce.d = d; return d;
   }
-  // IL VOLO lungo la spirale, prima del palco. Tre pose: la partenza (sopra il filo indaco, da fuori, guardando lungo il
-  // filo che gira attorno al mobile), il passaggio (più vicino, mentre si piega verso il mobile) e l'arrivo, che è lo
-  // sguardo del palco. «da» è di quanto si è indietro lungo il giro, «r» il raggio, «sopra» quanto si sta sopra il filo,
-  // «avanti» di quanto si guarda avanti lungo il filo, «verso» quanto di quello sguardo va al filo (il resto al mobile)
-  const VOLO = {sopra: 5600, sopraLontano: 7300, parte: {filo: 300, r: 9000, sopra: 2200, avanti: gradi(50), verso: 0.06, su: 800, fov: 42, ap: 80},
-    passa: {quanto: 0.49, r: 6400, sopra: 2600, avanti: gradi(50), verso: 0.12, su: 300, fov: 34, ap: 60}};
-  const quotaFilo = (a, filo, verso) => mondo.quota(a + elica.rotation.y, filo, verso);   // (l'elica è girata attorno all'asse: gli angoli del mondo sono i suoi meno il giro)
-  const centro = new V3(), ZERO3 = new V3(); let sopraOra = 5600;
+  const centro = new V3(); let velaOra = '';
   function quadroGrande(ora) {
     const st = SC.copione(), stretto = larga < 720, E = st.E1, F = st.fuoco, C = dolce(st.catena), tv = Math.tan(gradi(25) / 2);
     atteggia(mobile, st);
@@ -457,101 +438,64 @@ function avvia() {
     const r = palco.getBoundingClientRect(), oltre = Math.max(0, -(r.bottom - alta)), V = dolce(tratto(oltre, 0, alta * 0.5));
     const rc = contatto.getBoundingClientRect(), fine = dolce(tratto(alta - rc.top, alta * 0.1, alta));
 
-    // attorno al mobile i pioli non ci sono: il mobile sta al loro posto. Tornano, crescendo dai fili, quando lo sguardo
-    // si allarga sulla catena
-    const w = 1 - dolce(st.volo);
-    mondo.ritira(misto(3300, 700, Math.max(C, V, w)));
     // PRIMA DEL PALCO: l'apertura, gli strumenti, la catena. «g» va da 0 (in cima) a 1 (il palco arriva in cima); «kA»,
     // «kL» e «kP» dicono quanto sono davanti l'apertura, il quadro fermo della catena e il palco: lì il 3D è pieno,
     // dietro i testi si fa da parte
     const g = lim(1 - r.top / Math.max(1, palco.offsetTop), 0, 1), rl = lega.getBoundingClientRect();
-    const kA = dolce(tratto(scrollY, alta * 0.8, alta * 0.25)), kL = dolce(tratto(rl.top, alta * 0.4, 0)) * dolce(tratto(rl.bottom, alta * 0.55, alta * 0.95)), kP = dolce(tratto(alta - r.top, alta * 0.15, alta * 0.85));
+    const kA = dolce(tratto(scrollY, alta * 0.8, alta * 0.25)), kL = dolce(tratto(rl.top, alta * 0.4, 0)) * dolce(tratto(rl.bottom, alta * 0.55, alta * 0.95)), kP = dolce(tratto(alta - r.top, alta * 0.55, alta * 0.95));   // (il 3D torna pieno quando il palco è quasi in cima: prima ci sono ancora le cinque aree da leggere)
     const pl = tratto(-rl.top, 0, Math.max(1, rl.height - alta));
-    if (mondo.tempo) mondo.tempo(window.TEMPO === undefined ? ora / 1000 : window.TEMPO);   // le foglie respirano, la linfa sale, le chiazze di luce si spostano
 
-    // 1. IL PALCO: sul mobile chiuso, poi aperto, poi sul fianco dove nascono i fori (lo sguardo di prima)
-    let hw = 800 + 420 * E + 110 * st.E2, hh = 345 + 215 * E + 50 * st.E2, az = gradi(30 + 7 * E), el = gradi(21 + 1 * E), parte = misto(0.36, 0.47, E), su = misto(0.1, 0.13, E);
+    // LO SGUARDO (come nella prima versione): il mobile chiuso, grande, sotto il titolo; poi aperto; poi sul fianco dove
+    // nascono i fori. L'apertura della pagina e l'inizio del palco sono lo stesso sguardo
+    let hw = (stretto ? 550 : 800) + (stretto ? 510 : 420) * E + 110 * st.E2, hh = 345 + 215 * E + 50 * st.E2, az = gradi(30 + 7 * E), el = gradi(21 + 1 * E), parte = misto(0.36, 0.47, E), su = misto(0.1, 0.13, E), lato = 0;
     centro.set(120 * E, 30 * E, 170 * E);
     const mix = (k, c2, hw2, hh2, az2, el2, parte2, su2) => { centro.lerp(c2, k); hw = misto(hw, hw2, k); hh = misto(hh, hh2, k); az = misto(az, az2, k); el = misto(el, el2, k); parte = misto(parte, parte2, k); su = misto(su, su2, k); };
     mix(F, pTmp.set(SC.mob800.L / 2 + 430 - 70, 0, 0), 330, 320, gradi(58), gradi(8), 0.56, 0.18);
-    const d = guardaPosa(pPalco, centro, hw, hh, az, el, parte, su, 0);
-    pPalco.fuoco = d; pPalco.ap = misto(30, 20, F); pPalco.n0 = d + 2600; pPalco.nL = 5200; pPalco.alto0 = 1600; pPalco.alto1 = 5000;
-    // il filo indaco passa accanto alla camera del palco, sotto e dietro: il mondo si gira perché sia così (il giro si
-    // decide sul mobile chiuso, e poi non cambia più)
-    if (elica.userData.aspetto !== cam.aspect) { elica.userData.aspetto = cam.aspect;
-      const dp = guardaPosa(pVolo, ZERO3, 800, 345, gradi(30), gradi(21), 0.36, 0.1, 0);
-      // (su uno schermo stretto la camera del palco sta più lontano: il filo le passa più sotto, perché dietro al mobile non si veda)
-      sopraOra = misto(VOLO.sopra, VOLO.sopraLontano, tratto(dp, 4400, 8900));
-      elica.rotation.y = -(pVolo.a + DUE_PI * (pVolo.y - sopraOra) / PM); elica.updateMatrixWorld(); mondo.faiBracci(elica.rotation.y); }
-    mondo.ritiraBracci(520 * E + 2600 * F, 520 * E);   // i bracci che tengono il mobile gli fanno posto quando si apre; il destro lascia vedere il fianco con i fori
-
-    // 2. L'ELICA INTERA, prima del palco: all'apertura il mobile sta sotto il titolo, piccolo dentro il grande, tenuto dai
-    // due bracci; scendendo lo sguardo scende ai sei pioli degli strumenti, e gira piano attorno all'elica
-    if (st.volo < 1) {
-      // All'apertura il titolo e il sottotitolo restano liberi, in alto: l'elica sta tutta sotto, nello spazio che resta, e
-      // sfuma nell'aria prima di arrivare al testo e prima della scritta «Scorrere» (Paolo, via Nihil: niente rami dentro le lettere)
-      const q = dolce(tratto(g, 0.1, 0.55)), fT = lim((testoApertura.offsetTop + testoApertura.offsetHeight) / alta, 0.12, 0.42) + 0.04, spazio = 1 - fT;
-      // (undici metri di elica: il giro attorno al mobile, con l'incrocio sopra e quello sotto. «yA» è la quota che sta a una frazione dello schermo)
-      const hhA = 5500 / spazio, cyA = (2 * (fT + 0.5 * spazio) - 1) * hhA, yA = f => cyA + hhA * (1 - 2 * f);
-      const hhL = misto(hhA, stretto ? 5700 : 5300, q), cyL = misto(cyA, -4250, q);
-      const dl = guardaPosa(pLargo, pTmp.set(0, cyL, 0), stretto ? 1700 : 5600, hhL, gradi(16 + 34 * g), gradi(4), 1, 0, 0);
-      Object.assign(pLargo, {fuoco: dl, ap: 40, n0: dl - 1500, nL: 13000, alto0: misto(yA(fT + 0.07), cyL + hhL * 0.8, q), alto1: misto(yA(fT - 0.02), cyL + hhL * 1.5, q), basso0: misto(yA(0.79), cyL - hhL * 1.15, q), basso1: misto(yA(0.92), cyL - hhL * 2.5, q)});
-    }
-    // IL VOLO: all'inizio del palco la camera lascia l'elica intera, scende lungo la spirale sopra il ramo e trova il mobile
-    if (st.volo < 1) {
-      const v = dolce(st.volo), yFiloQui = pPalco.y - sopraOra;   // (il filo indaco, all'angolo della camera del palco)
-      // la partenza è dove il filo indaco passa alla quota «filo»: da lì il mobile si vede sopra il filo, più lontano
-      const daParte = (VOLO.parte.filo - yFiloQui) * DUE_PI / PM;
-      [[VOLO.parte, pVoloA, daParte], [VOLO.passa, pVoloB, daParte * VOLO.passa.quanto]].forEach(([K, p, da]) => {
-        p.a = pPalco.a - da; p.r = K.r; const yF = yFiloQui + da * PM / DUE_PI; p.y = yF + K.sopra;
-        const aM = p.a + K.avanti; pTmp.set(Math.cos(aM) * RM, yF - K.avanti * PM / DUE_PI + 200, Math.sin(aM) * RM);
-        p.mira.set(0, 250 + K.su, 0).lerp(pTmp, K.verso);
-        Object.assign(p, {fov: K.fov, ap: K.ap, alto0: 900, alto1: 3100, basso0: pPalco.basso0, basso1: pPalco.basso1});
-        p.fuoco = pTmp2.set(Math.cos(p.a) * p.r, p.y, Math.sin(p.a) * p.r).length(); p.n0 = p.fuoco + 1200; p.nL = 3400;
-      });
-      // (una curva sola fra le tre pose: la seconda la tira a sé, senza fermarcisi)
-      mista(mista(pLargo, pVoloB, v, pTmp3), mista(pVoloB, pPalco, v, pTmp4), v, pOra);
-    } else mista(pPalco, pPalco, 0, pOra);
-
-    // 3. LA CATENA: la camera esce dal foro e si allontana finché l'elica sta nel quadro, con il mobile piccolo dentro e
-    // i cinque passaggi sui pioli sotto di lui
-    if (C > 0) {
-      const dc = guardaPosa(pCatena, pTmp.set(0, -3450, 0), stretto ? 1500 : 6900, stretto ? 5300 : 5090, gradi(16), gradi(4), 0.8, 0.19, 0);
-      Object.assign(pCatena, {fuoco: dc, ap: 40, n0: dc - 1500, nL: 13000, alto0: 700, alto1: 2700, basso0: -9500, basso1: -17000});
-      mista(pOra, pCatena, dolce(tratto(st.catena, 0, 0.6)), pOra);   // (la camera arriva prima delle scritte)
-    }
-    // 4. OLTRE IL PALCO: l'elica si sposta di lato e scende, girando piano, mentre la pagina le scorre sopra; in fondo
-    // torna in mezzo
-    if (V > 0) {
-      const yc = -3450 - oltre * 2.4, giro = gradi(16) + oltre * 0.0004;
-      [[pGiu, stretto ? 0 : 1.12, 4], [pFine, 0, 7]].forEach(([p, lato, el]) => { const dg = guardaPosa(p, pTmp.set(0, yc, 0), 0, 0, giro, gradi(el), 1, 0, lato, 21000);
-        Object.assign(p, {fuoco: dg, ap: 30, n0: dg - 1500, nL: 13000, alto0: yc + 5200, alto1: yc + 10500, basso0: yc - 5200, basso1: yc - 10500}); });
-      mista(pOra, pGiu, V, pOra);
-      if (fine > 0) mista(pOra, pFine, fine, pOra);
-    }
+    // prima del palco lo sguardo scende ai sei pioli sotto il mobile, dove stanno i sei nomi; all'inizio del palco torna sul mobile
+    const kNomi = dolce(tratto(g, 0.1, 0.5)) * (1 - dolce(st.volo));
+    // attorno al mobile i pioli non ci sono: restano i due fili e i nodi, puliti (Paolo, 22 novembre: visti dall'alto i
+    // pioli facevano una ragnatela). Crescono dai fili quando lo sguardo scende ai sei nomi, e poi sulla catena e oltre
+    const pulito = 1 - Math.max(kNomi, C, V);
+    mondo.ritira(330 + 560 * E, pulito);
+    mix(kNomi, pTmp.set(0, -1100, 0), stretto ? 440 : 1250, stretto ? 1560 : 1300, gradi(16), gradi(5), 0.8, stretto ? 0.11 : 0.1);
+    // la catena dei cinque passaggi, poi oltre il palco l'elica si sposta di lato e scende mentre la pagina le scorre sopra
+    mix(C, pTmp.set(0, -900, 0), stretto ? 520 : 1250, stretto ? 1450 : 1330, gradi(16), gradi(5), 0.74, stretto ? 0.2 : 0.18);
+    mix(V, pTmp.set(0, -900 - oltre * 0.8, 0), misto(1000, 1300, fine), misto(820, 1150, fine), gradi(8), gradi(2), 1, 0);
+    lato = V * misto(stretto ? 0.86 : 0.9, 0, fine);
+    pOra.fov = 25; const d = guardaPosa(pOra, centro, hw, hh, az, el, parte, su, lato);
+    Object.assign(pOra, {fuoco: d, ap: 0, n0: 1e6, nL: 1e6});
+    // (sul telefono l'elica è più larga dello schermo: attorno al mobile si vede solo la metà che gli passa dietro, mai un filo davanti)
+    const dietro = stretto ? pulito : 0;
+    mondo.aria(misto(misto(d - 560 - 300 * E, d - 150, dietro), d - 2600, V), misto(misto(d - 60 - 100 * E, d + 300, dietro), d - 1500, V), d + 150, d + 2900);
+    const tempoFilo = window.TEMPO === undefined ? ora / 1000 : window.TEMPO;
+    elica.rotation.y = scrollY * 0.0011 + tempoFilo * 0.05; elica.scale.x = elica.scale.z = 1 + 0.62 * E * (1 - C);
     if (window.POSA) { const q = window.POSA; pOra.a = gradi(q[0]); pOra.r = q[1]; pOra.y = q[2]; pOra.mira.set(q[3], q[4], q[5]); 
       pOra.fov = q[6] || 25; pOra.fuoco = q[7] || pOra.fuoco; pOra.ap = q[8] === undefined ? pOra.ap : q[8]; pOra.n0 = q[9] || pOra.n0; pOra.nL = q[10] || pOra.nL; if (q[11]) mondo.ritira(q[12]);
       if (q[13] !== undefined) { pOra.alto0 = q[13]; pOra.alto1 = q[14]; pOra.basso0 = q[15]; pOra.basso1 = q[16]; } if (q[17] !== undefined) { elica.rotation.y = gradi(q[17]); } }
     if (Math.abs(cam.fov - pOra.fov) > 0.001) { cam.fov = pOra.fov; cam.updateProjectionMatrix(); }
     metti(cam, pOra);
     const o = S1.ottica; o.fuoco = pOra.fuoco; o.apertura = pOra.ap; o.nebbia0 = pOra.n0; o.nebbiaL = pOra.nL; o.alto0 = pOra.alto0; o.alto1 = pOra.alto1; o.basso0 = pOra.basso0; o.basso1 = pOra.basso1;
-    L1.terra.position.set(60 * E, -H / 2 - 210 - 130 * E, 40 + 120 * E); L1.terra.scale.set(1500 + 900 * E, 950 + 700 * E, 1); L1.terra.material.opacity = tintaNotte.ombra * (1 - 0.45 * E) * (1 - 0.6 * F) * (1 - w) * (1 - C);
+    L1.terra.position.set(60 * E, -H / 2 - 210 - 130 * E, 40 + 120 * E); L1.terra.scale.set(1500 + 900 * E, 950 + 700 * E, 1); L1.terra.material.opacity = tinta.ombra * (1 - 0.45 * E) * (1 - 0.6 * F) * (1 - kNomi);
     coloraPioli(st, ora, pOra.mira.y, 3000);
-    telaGrande.style.opacity = misto(misto(stretto ? 0.16 : 0.2, 1, Math.max(kA, kL, kP)), misto(stretto ? 0.14 : 0.42, stretto ? 0.24 : 0.42, fine), V).toFixed(3);
-    // la notte finisce dove finisce il palco
-    fondoNotte.style.setProperty('--orlo', Math.max(0, r.bottom + 80).toFixed(0) + 'px');
+    telaGrande.style.opacity = misto(misto(0.05, 1, Math.max(kA, kL, kP)), misto(stretto ? 0.14 : 0.42, stretto ? 0.24 : 0.42, fine), V).toFixed(3);
+    // il titolo dell'apertura e le didascalie del palco restano liberi: sopra il mobile la tela si scioglie, e i fili non
+    // passano dentro le lettere. Sul telefono, dove i testi stanno sopra il 3D, vale anche per il verso «Da sopra»
+    { let fT = 0, vela = 0;
+      const prova = (k, fondo) => { if (k > vela) { vela = k; fT = fondo; } };
+      prova(kA, testoApertura.offsetTop + testoApertura.offsetHeight);
+      prova(kP * (1 - V) * 0.999, misure.dida);
+      if (stretto && misure.versi[0]) prova(kL * dolce(tratto(pl, VERSI[0], VERSI[0] + 0.14)), misure.versi[0][1] + misure.versi[0][3]);
+      const m = vela > 0.01 && fT > 0 ? `linear-gradient(to bottom,rgba(0,0,0,${(1 - 0.9 * vela).toFixed(2)}) ${(fT - 30).toFixed(0)}px,#000 ${(fT + (stretto ? 30 : 12)).toFixed(0)}px)` : '';
+      if (m !== velaOra) { velaOra = m; telaGrande.style.maskImage = m; telaGrande.style.webkitMaskImage = m; } }
     S1.rendi();
-    if (S1.cinema()) { const u = polvere.u; u.tFondo.value = S1.fondo(); u.uVicino.value = cam.near; u.uLontano.value = cam.far; u.uFuoco.value = o.fuoco; u.uApertura.value = o.apertura * u.uAlta.value / (4 * tv); u.uMaxR.value = o.massimo * u.uAlta.value / 900;
-      u.uNebbia.value.set(o.nebbia0, o.nebbiaL); u.uTempo.value = ora / 1000; u.uColore.value.copy(tintaNotte.polvere); u.uForza.value = tintaNotte.polvereForza;
-      R1.autoClear = false; R1.render(scenaPolvere, cam); R1.autoClear = true; }
     // i sei nomi, ognuno sulla gemma del suo piolo, e i due versi della catena. Un nome che cadrebbe sotto un verso
     // (su uno schermo stretto i versi stanno sopra l'elica) si ritira prima che il verso arrivi: mai un testo sopra un nome
-    if (!(giroMisure++ % 20)) { misure.nomi = attrezzi.map(e => [e.offsetWidth, e.offsetHeight]); misure.versi = versi.map(e => [e.offsetLeft, e.offsetTop, e.offsetWidth, e.offsetHeight]); }
+    if (!(giroMisure++ % 20)) { misure.dida = dide.reduce((f, e) => +getComputedStyle(e).opacity > 0.3 ? Math.max(f, e.getBoundingClientRect().bottom) : f, 0);
+      misure.nomi = attrezzi.map(e => [e.offsetWidth, e.offsetHeight]); misure.versi = versi.map(e => [e.offsetLeft, e.offsetTop, e.offsetWidth, e.offsetHeight]); }
     attrezzi.forEach((e, j) => { const acceso = dolce(tratto(pl, 0.04 + j * 0.07, 0.16 + j * 0.07)) * kL; accesi[j] = acceso;
-      pTmp.set(0, ATTREZZI[j] - 260, 0).project(cam);
+      pTmp.set(0, ATTREZZI[j], 0).project(cam);
       const x = (pTmp.x + 1) / 2 * larga, y = (1 - pTmp.y) / 2 * alta, [nw, nh] = misure.nomi[j]; let resta = 1;
       misure.versi.forEach(([vl, vt, vw, vh], v) => { if (x + nw / 2 > vl - 12 && x - nw / 2 < vl + vw + 12 && y + nh / 2 > vt - 10 && y - nh / 2 < vt + vh + 10) resta *= 1 - dolce(tratto(pl, VERSI[v] - 0.07, VERSI[v] - 0.01)); });
-      mondo.chiudiGemma(PIOLI_NOMI[j], (1 - resta) * kL);   // (e la gemma di quel piolo si chiude: niente punto di luce dentro le parole del verso)
       sboccia(e, acceso * resta, x, y); });
     versi.forEach((e, j) => { const k = dolce(tratto(pl, VERSI[j], VERSI[j] + 0.14)) * kL; e.style.opacity = k.toFixed(2); e.style.transform = `translateY(${((1 - k) * (j ? 18 : -18)).toFixed(1)}px)`; });
     // le etichette dei cinque passaggi, ognuna sul suo piolo
@@ -585,33 +529,14 @@ function avvia() {
   function misuraViva() { const r = telaViva.getBoundingClientRect(); if (!r.width || !r.height) return; larga2 = r.width; alta2 = r.height; R2.setSize(larga2, alta2, false); S2.misura(larga2, alta2); cam2.aspect = larga2 / alta2; cam2.updateProjectionMatrix(); disegnaViva(); }
 
   // ---------------------------------------------------------------------------------------------------------------
-  // LA LUCE E IL LEGNO VERI (il terzo giro, 21 novembre notte: Paolo ha detto sì a due file di Poly Haven, licenza CC0;
-  // chi li ha fatti è scritto in CREDITI.md). Arrivano dopo: la pagina parte subito con la stanza e il rovere disegnati
-  // qui, e quando i file sono arrivati li cambia. Se un file non arriva, o chi guarda ha chiesto di risparmiare dati,
-  // resta quello disegnato
-  // - la luce: la foto di uno studio vero (un HDRI) al posto della stanza disegnata. La specchiano il laccato e lo smalto
-  // - il legno: un'impiallacciatura di rovere fotografata: il colore, il rilievo e la ruvidezza. Il tono resta quello
-  //   scelto (ROVERE.fondo): la foto è più chiara e più gialla, e una tinta la porta lì
-  const VERI = {luce: 'luce/studio_small_09_1k.hdr', colore: 'legno/oak_veneer_01_diff_1k.jpg', rilievo: 'legno/oak_veneer_01_nor_gl_1k.jpg', ruvido: 'legno/oak_veneer_01_rough_512.jpg'};
-  const vero = {luce: false, legno: false};
+  // IL LEGNO VERO: un'impiallacciatura di rovere fotografata (Poly Haven, licenza CC0; chi l'ha fatta è scritto in
+  // CREDITI.md): il colore, il rilievo e la ruvidezza. Arriva dopo: la pagina parte subito con il rovere disegnato qui, e
+  // quando i file sono arrivati lo cambia. Se un file non arriva, o chi guarda ha chiesto di risparmiare dati, resta quello
+  // disegnato. Il tono resta quello scelto (ROVERE.fondo): la foto è più chiara e più gialla, e una tinta la porta lì
+  const VERI = {colore: 'legno/oak_veneer_01_diff_1k.jpg', rilievo: 'legno/oak_veneer_01_nor_gl_1k.jpg', ruvido: 'legno/oak_veneer_01_rough_512.jpg'};
+  const vero = {legno: false};
   function veri() {
     if (navigator.connection && navigator.connection.saveData) return;
-    new HDRLoader().load(VERI.luce, hdr => {
-      hdr.mapping = THREE.EquirectangularReflectionMapping;
-      // le lampade dello studio sono piccole e fortissime (fino a 500 volte il bianco): specchiate danno puntini e
-      // seghetti. Si fermano a LUCE.tetto: restano lampade, ma morbide
-      const d = hdr.image.data, tetto = THREE.DataUtils.toHalfFloat(LUCE.tetto);
-      if (hdr.type === THREE.HalfFloatType) for (let i = 0; i < d.length; i++) { if ((i & 3) !== 3 && THREE.DataUtils.fromHalfFloat(d[i]) > LUCE.tetto) d[i] = tetto; }
-      // lo studio della foto ha il soffitto nero: il piano del lavabo, che guarda in su, ci si specchierebbe spento.
-      // Come si fa in uno studio, sopra il mobile si appende un pannello largo di luce morbida
-      const posa = new THREE.Scene(); posa.background = hdr; posa.backgroundRotation.y = gradi(LUCE.giroStudio);
-      const cielo = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({color: new THREE.Color().setScalar(LUCE.cielo)}));
-      cielo.position.set(0.4, 4, 0.6); cielo.scale.set(6.5, 0.1, 5); posa.add(cielo);
-      [[R1, scena], [R2, scena2]].forEach(([r, s]) => { const pm = new THREE.PMREMGenerator(r), prima = s.environment; s.environment = pm.fromScene(posa, 0, 0.1, 100).texture; pm.dispose(); if (prima) prima.dispose();
-        s.environmentIntensity = LUCE.studio; s.environmentRotation.y = 0; });
-      cielo.geometry.dispose(); cielo.material.dispose();
-      hdr.dispose(); vero.luce = true; disegnaViva();
-    }, undefined, () => {});
     const carica = new THREE.TextureLoader(), foto = {}, nomi = ['colore', 'rilievo', 'ruvido'];
     const veste = m => { if (!m || !m.userData || !m.userData.legno) return; m.map = foto.colore; m.normalMap = foto.rilievo; m.normalScale.setScalar(LEGNO.rilievo); m.bumpMap = null; m.roughnessMap = foto.ruvido; m.color.set(LEGNO.tinta); m.needsUpdate = true; };
     nomi.forEach(n => carica.load(VERI[n], t => { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8; if (n === 'colore') t.colorSpace = THREE.SRGBColorSpace; foto[n] = t;
@@ -625,23 +550,23 @@ function avvia() {
   // ---------------------------------------------------------------------------------------------------------------
   // L'AVVIO
   function tema() {
-    tinta = tinte(); tintaNotte = tinteNotte(); mondo.tema(tintaNotte);
+    tinta = tinte(); mondo.tema(tinta);
     // i materiali che prendono il colore dalla pagina (il laccato, la ceramica, il frontale in evidenza), anche nelle copie
     const ritinge = (m, t) => { if (m && m.userData && t[m.userData.tinta]) { m.color.copy(t[m.userData.tinta]); if (m.emissiveIntensity && m.emissive.getHex()) m.emissive.copy(m.color); } };
-    Object.values(M2).forEach(m => ritinge(m, tinta)); Object.values(M1).forEach(m => ritinge(m, tintaNotte)); scena.traverse(o => ritinge(o.material, tintaNotte));
-    R1.toneMappingExposure = tintaNotte.esposizione; R2.toneMappingExposure = tinta.esposizione;
+    Object.values(M2).forEach(m => ritinge(m, tinta)); Object.values(M1).forEach(m => ritinge(m, tinta)); scena.traverse(o => ritinge(o.material, tinta));
+    R1.toneMappingExposure = tinta.esposizione; R2.toneMappingExposure = tinta.esposizione;
     L2.terra.material.opacity = tinta.ombra; mQuota.color.copy(tinta.segno); disegnaViva();
   }
-  tema();                                                // (la scena grande prende subito i colori della notte)
+  tema();
   misuraGrande();
   addEventListener('resize', misuraGrande);
   quadroGrande(performance.now());                       // il primo quadro: se WebGL non regge, si esce qui e resta il disegno
   radice.classList.add('tre');                           // da qui le due tele 3D hanno la loro misura
   // «resa» dice com'è fatta la foto: lo leggono le prove
   SC.accendi({viva: mob => { mobVivo = mob; disegnaViva(); }, onda: () => { ondaDa = performance.now(); }, tema,
-    resa: () => ({sviluppo: R1.toneMapping === THREE.ACESFilmicToneMapping ? 'ACES' : 'altro', esposizione: R1.toneMappingExposure, ambiente: vero.luce ? 'studio (HDRI)' : 'RoomEnvironment', rovereVero: vero.legno, ombre: R1.shadowMap.type === THREE.PCFShadowMap ? 'PCF' : 'altro',
+    resa: () => ({sviluppo: R1.toneMapping === THREE.ACESFilmicToneMapping ? 'ACES' : 'altro', esposizione: R1.toneMappingExposure, ambiente: 'stanza (RoomEnvironment)', rovereVero: vero.legno, ombre: R1.shadowMap.type === THREE.PCFShadowMap ? 'PCF' : 'altro',
       occlusione: S1.acceso(), occlusioneViva: S2.acceso(), frontale: '#' + M1.frontale.color.getHexString(), ceramica: '#' + M1.ceramica.color.getHexString(), rovere: ROVERE.fondo,
-      interno: '#' + M1.interno.color.getHexString(), elica: ['#' + tintaNotte.filoA.getHexString(), '#' + tintaNotte.filo.getHexString()], notte: getComputedStyle(fondoNotte).display === 'block', pezzi: mondo.pezzi, cinema: S1.cinema(), evidenza: '#' + M2.vivo.color.getHexString(), vasca: 'morbida'})});
+      interno: '#' + M1.interno.color.getHexString(), elica: ['#' + tinta.filoA.getHexString(), '#' + tinta.filo.getHexString()], pezzi: mondo.pezzi, cinema: S1.cinema(), evidenza: '#' + M2.vivo.color.getHexString(), vasca: 'morbida'})});
   if (window.ResizeObserver) new ResizeObserver(misuraViva).observe(telaViva); else addEventListener('resize', misuraViva);
   misuraViva();
   veri();
