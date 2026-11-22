@@ -168,6 +168,7 @@ html.js.mov.tre .verso.sopra{left:22px;right:22px;top:calc(var(--testa) + 3vh);m
 html.js.mov.tre .verso.sotto{left:22px;right:22px;bottom:4vh;margin-inline:auto}
 html.tre .verso p{color:var(--testo);text-shadow:0 0 14px var(--fondo-b),0 0 4px var(--fondo-b)}
 .aree-titolo{font-size:clamp(26px,3.4vw,44px);font-weight:700;letter-spacing:-.025em;text-align:center;text-wrap:balance;margin-top:clamp(56px,10vh,110px)}
+.aree-nota{margin:clamp(28px,5vh,48px) auto 0;text-align:center;color:var(--testo-2);font-size:15.5px;text-wrap:balance}
 .aree{display:grid;gap:22px;margin-top:clamp(28px,5vh,52px)}
 .aree li{padding-top:16px;border-top:1px solid var(--filo-2)}
 .aree h4{display:grid;gap:8px;font-size:clamp(19px,1.8vw,22px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
