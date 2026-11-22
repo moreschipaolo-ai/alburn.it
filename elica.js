@@ -1,7 +1,7 @@
 // Alburn, la pagina di alburn.it: l'elica a filo (22 novembre 2026).
 // Paolo è tornato al filo della prima versione, più leggero e pulito, al posto dell'elica viva con rami e foglie (che
 // resta nella storia dell'archivio, fino al commit d88b6c3).
-import * as THREE from './three/three.module.js';
+import * as THREE from './three/three.module.min.js';
 
 const V3 = THREE.Vector3, DUE_PI = Math.PI * 2;
 const lim = (x, a, b) => Math.min(b, Math.max(a, x)), tratto = (p, a, b) => lim((p - a) / (b - a), 0, 1), dolce = x => x * x * (3 - 2 * x), misto = (a, b, k) => a + (b - a) * k;

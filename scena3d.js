@@ -16,7 +16,7 @@
 // disegnato. La luce resta quella della stanza disegnata: la foto dello studio (1,6 MB) è stata tolta il 22 novembre,
 // perché la pagina pesava troppo (Paolo).
 // Senza WebGL, o per chi chiede meno movimento, questo file non fa niente: resta il disegno a spigoli di scena.js.
-import * as THREE from './three/three.module.js';
+import * as THREE from './three/three.module.min.js';
 import {RoomEnvironment} from './three/addons/environments/RoomEnvironment.js';
 import {GTAOPass} from './three/addons/postprocessing/GTAOPass.js';
 import {FullScreenQuad} from './three/addons/postprocessing/Pass.js';
@@ -430,7 +430,7 @@ function avvia() {
     let a = Math.atan2(z, x); a += Math.round((verso - a) / DUE_PI) * DUE_PI;
     esce.a = a; esce.r = Math.hypot(x, z); esce.y = cy + Math.sin(el) * d; esce.mira.set(cx, cy, cz); esce.d = d; return d;
   }
-  const centro = new V3(); let velaOra = '';
+  const centro = new V3(), testoContatto = contatto.querySelector('.largo'); let velaOra = '';
   function quadroGrande(ora) {
     const st = SC.copione(), stretto = larga < 720, E = st.E1, F = st.fuoco, C = dolce(st.catena), tv = Math.tan(gradi(25) / 2);
     atteggia(mobile, st);
@@ -485,7 +485,10 @@ function avvia() {
       prova(kA, testoApertura.offsetTop + testoApertura.offsetHeight);
       prova(kP * (1 - V) * 0.999, misure.dida);
       if (stretto && misure.versi[0]) prova(kL * dolce(tratto(pl, VERSI[0], VERSI[0] + 0.14)), misure.versi[0][1] + misure.versi[0][3]);
-      const m = vela > 0.01 && fT > 0 ? `linear-gradient(to bottom,rgba(0,0,0,${(1 - 0.9 * vela).toFixed(2)}) ${(fT - 30).toFixed(0)}px,#000 ${(fT + (stretto ? 30 : 12)).toFixed(0)}px)` : '';
+      let m = vela > 0.01 && fT > 0 ? `linear-gradient(to bottom,rgba(0,0,0,${(1 - 0.9 * vela).toFixed(2)}) ${(fT - 30).toFixed(0)}px,#000 ${(fT + (stretto ? 30 : 12)).toFixed(0)}px)` : '';
+      // nel contatto i fili non passano dietro il testo, il tasto e l'indirizzo (Paolo, 22 novembre: «Prima liberare il contatto»):
+      // una fascia della tela, alta quanto il blocco del testo e che lo segue mentre la pagina scorre, resta vuota
+      if (rc.top < alta) { const rt = testoContatto.getBoundingClientRect(); if (rt.bottom > 0) m = `linear-gradient(to bottom,#000 ${(rt.top - 90).toFixed(0)}px,transparent ${(rt.top - 14).toFixed(0)}px,transparent ${(rt.bottom + 14).toFixed(0)}px,#000 ${(rt.bottom + 90).toFixed(0)}px)`; }
       if (m !== velaOra) { velaOra = m; telaGrande.style.maskImage = m; telaGrande.style.webkitMaskImage = m; } }
     S1.rendi();
     // i sei nomi, ognuno sulla gemma del suo piolo, e i due versi della catena. Un nome che cadrebbe sotto un verso

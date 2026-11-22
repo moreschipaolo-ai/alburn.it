@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="stile.css">
 <script>document.documentElement.className = 'js' + (matchMedia('(prefers-reduced-motion: reduce)').matches || /[?&]fermo\b/.test(location.search) ? '' : ' mov');</script>
 <!-- i pezzi del 3D presi dagli esempi di three.js (three/addons/) chiedono «three» per nome: qui si dice che è il file nella cartella -->
-<script type="importmap">{"imports": {"three": "./three/three.module.js"}}</script>
+<script type="importmap">{"imports": {"three": "./three/three.module.min.js"}}</script>
 </head>
 <body>
 
@@ -50,7 +50,7 @@
 <section class="apertura" id="apertura">
   <div class="apertura-testo">
     <h1 data-t="hero.titolo">Tutto collegato.</h1>
-    <p class="sotto" data-t="hero.sotto">Un sistema solo per tutto quello che ruota attorno all’articolo.<br>Dal foro alla fabbrica, una catena sola.</p>
+    <p class="sotto" data-t="hero.sotto">Un sistema solo per tutto quello che ruota attorno all’articolo, nell’industria del mobile.<br>Dal foro alla fabbrica, una catena sola.</p>
   </div>
   <picture><source media="(prefers-color-scheme: dark)" srcset="ferma/elica_scuro.jpg"><img class="ferma" src="ferma/elica.jpg" width="1600" height="1000" alt="" loading="lazy" decoding="async"></picture>
   <p class="scorri" aria-hidden="true"><span data-t="hero.scorri">Scorri</span><svg viewBox="0 0 12 18" width="12" height="18"><path d="M6 1v15M1 11l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></p>
@@ -286,7 +286,7 @@
   <div class="largo entra">
     <h2 data-t="contatto.titolo">Alburn da vicino.</h2>
     <p class="cappello" data-t="contatto.testo">Per le aziende dell’arredo e per i fornitori di ferramenta: una dimostrazione sull’azienda d’esempio.</p>
-    <p><a class="posta" href="mailto:paolo@alburn.it" data-t="contatto.tasto">Chiedere una dimostrazione</a></p>
+    <p><a class="posta" href="mailto:paolo@alburn.it" data-t="contatto.tasto">Chiedi una dimostrazione</a></p>
     <p class="indirizzo"><a href="mailto:paolo@alburn.it">paolo@alburn.it</a></p>
   </div>
 </section>

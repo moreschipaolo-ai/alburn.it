@@ -21,7 +21,7 @@
     'lingue.aria': 'Language',
 
     'hero.titolo': 'All connected.',
-    'hero.sotto': 'One system for everything that revolves around the item.<br>From the hole to the factory, one single chain.',
+    'hero.sotto': 'One system for everything that revolves around the item, in the furniture industry.<br>From the hole to the factory, one single\u00a0chain.',
     'hero.scorri': 'Scroll',
 
     'prima.occhiello': 'The starting point',
